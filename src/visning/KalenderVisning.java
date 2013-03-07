@@ -37,7 +37,7 @@ public class KalenderVisning {
 					.print((new SimpleDateFormat("dd/MM")).format(dag[i]) + "    ");
 		}
 		System.out.println();
-		for (int i = 0; i < 24; i++) {
+		for (int i = 8; i < 20; i++) {
 			System.out.print(i < 10 ? "0" : "");
 			System.out.print(i);
 			System.out.print("-");

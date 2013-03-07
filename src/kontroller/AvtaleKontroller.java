@@ -63,7 +63,8 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
-		System.out.println("\nk   kalender\nq   avslutt\n");
+		GeneriskVisning.printKommando("k", "kalender");
+		GeneriskVisning.printKommando("q", "avslutt");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
 			case 'k':

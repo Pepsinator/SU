@@ -25,6 +25,7 @@ public class AvtaleVisning {
 			else {
 				System.out.println("\tIngen deltakere.");
 			}
+			System.out.println();
 		}
 	}
 }

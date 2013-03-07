@@ -16,7 +16,7 @@ public class GeneriskVisning {
 	}
 
 	public static void printKommando (String id , String navn) {
-		System.out.println(id + Funksjon.strRepeat(" " , 5 - id.length()) + navn);
+		System.out.println(id + Funksjon.strRepeat(" " , 7 - id.length()) + navn);
 	}
 
 	public static void printAnsatte (ArrayList<Ansatt> ansatte) {
