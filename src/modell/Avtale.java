@@ -9,7 +9,6 @@ import java.util.Date;
 
 import bibliotek.Database;
 
-
 public class Avtale {
 	private int id;
 	private String navn;
@@ -19,7 +18,7 @@ public class Avtale {
 	private int mote_id;
 	private String beskrivelse;
 
-	//latskapsinitialisering
+	// latskapsinitialisering
 	private Ansatt ansatt;
 	private Mote mote;
 
@@ -61,25 +60,31 @@ public class Avtale {
 		return avt;
 	}
 
-	public void oppdater () throws SQLException {
+	public void oppdater() throws SQLException {
 		Connection kobling = Database.getInstans().getKobling();
 		Statement beretning = kobling.createStatement();
-		String sql = "update avtale set navn=\"" + this.navn + "\",start=from_unixtime(" + ((int) (this.start.getTime() * .001)) + "),slutt=from_unixtime(" + ((int) (this.start.getTime() * .001)) + "),ansatt_id=" + this.ansatt_id;
+		String sql = "update avtale set navn=\"" + this.navn
+				+ "\",start=from_unixtime("
+				+ ((int) (this.start.getTime() * .001))
+				+ "),slutt=from_unixtime("
+				+ ((int) (this.start.getTime() * .001)) + "),ansatt_id="
+				+ this.ansatt_id;
 		if (this.mote_id != 0) {
 			sql += ",mote_id=" + this.mote_id;
 		}
-		sql += ",beskrivelse=\"" + this.beskrivelse + "\" where id=" + this.id + ";";
+		sql += ",beskrivelse=\"" + this.beskrivelse + "\" where id=" + this.id
+				+ ";";
 		beretning.executeUpdate(sql);
 	}
 
-	public Ansatt getAnsatt () throws SQLException {
+	public Ansatt getAnsatt() throws SQLException {
 		if (this.ansatt == null) {
 			this.ansatt = Ansatt.medId(this.ansatt_id);
 		}
 		return this.ansatt;
 	}
 
-	public Mote getMote () throws SQLException {
+	public Mote getMote() throws SQLException {
 		if (this.mote == null) {
 			this.mote = Mote.medId(this.mote_id);
 		}

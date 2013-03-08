@@ -9,16 +9,22 @@ import java.util.Date;
 
 import bibliotek.Database;
 
-
 public class AvtaleListe {
 	public static ArrayList<Avtale> alle() throws SQLException {
 		return medSql("select id from avtale;");
 	}
 
-	public static ArrayList<Avtale> medTidsrom (Date start, Date slutt) throws SQLException {
-		String starta = "from_unixtime(" + ((int) (start.getTime() * .001)) + ")";
-		String slutta = "from_unixtime(" + ((int) (slutt.getTime() * .001)) + ")";
-		return medSql("select id from avtale where (" + starta + " <= start and start < " + slutta + ") or (" + starta + " <= slutt and slutt < " + slutta + ") or (" + starta + " <= start and slutt < " + slutta + ") or (start <= " + starta + " and " + slutta + " < slutt);");
+	public static ArrayList<Avtale> medAnsattIdTidsrom(int ansattId, Date start,
+			Date slutt) throws SQLException {
+		String starta = "from_unixtime(" + ((int) (start.getTime() * .001))
+				+ ")";
+		String slutta = "from_unixtime(" + ((int) (slutt.getTime() * .001))
+				+ ")";
+		return medSql("select id from avtale where ansatt_id=" + ansattId + " and ((" + starta
+				+ " <= start and start < " + slutta + ") or (" + starta
+				+ " <= slutt and slutt < " + slutta + ") or (" + starta
+				+ " <= start and slutt < " + slutta + ") or (start <= "
+				+ starta + " and " + slutta + " < slutt));");
 	}
 
 	public static ArrayList<Avtale> medSql(String sql) throws SQLException {
@@ -32,7 +38,7 @@ public class AvtaleListe {
 		return avtaler;
 	}
 
-	public static String oppramsIder (ArrayList<Avtale> avtaler) {
+	public static String oppramsIder(ArrayList<Avtale> avtaler) {
 		String res = "";
 		for (int i = 0; i < avtaler.size(); i++) {
 			if (i > 0) {

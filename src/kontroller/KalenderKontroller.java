@@ -11,35 +11,30 @@ import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.AvtaleListe;
-import modell.Gruppe;
 
 import visning.GeneriskVisning;
 import visning.KalenderVisning;
 
 public class KalenderKontroller extends AbstraktKontroller {
-	private KontrollerData kd;
 	private Date tid;
 	private Ansatt ansatt;
-	private Gruppe gruppe;
 
-	KalenderKontroller(KontrollerData kd) throws Exception {
+	KalenderKontroller() throws Exception {
 		super();
-		this.kd = kd;
-		this.ansatt = this.kd.getInnlogga();
-		this.gruppe = null;
+		this.ansatt = KontrollerData.getInstans().getInnlogga();
 		this.tid = new Date();
 		this.visKalender();
 	}
 
 	private void visKalender() throws Exception {
-		KalenderVisning.print(this.tid , this.ansatt , this.gruppe);
+		KalenderVisning.print(this.tid , this.ansatt);
 		Calendar kal = Calendar.getInstance();
 		System.out.println();
 		@SuppressWarnings("deprecation")
 		Date ukestart = new Date((new Date((new SimpleDateFormat("YYYY/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 2));
 		@SuppressWarnings("deprecation")
 		Date ukeslutt = new Date((new Date((new SimpleDateFormat("YYYY/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 9));
-		ArrayList<Avtale> avtaler = AvtaleListe.medTidsrom(ukestart , ukeslutt);
+		ArrayList<Avtale> avtaler = AvtaleListe.medAnsattIdTidsrom(this.ansatt.getId(), ukestart , ukeslutt);
 		for (int i = 0; i < avtaler.size(); i++) {
 			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn());
 		}
@@ -47,7 +42,6 @@ public class KalenderKontroller extends AbstraktKontroller {
 			System.out.println();
 		}
 		GeneriskVisning.printKommando("a", "vis som ansatt");
-		GeneriskVisning.printKommando("g", "vis som gruppe");
 		GeneriskVisning.printKommando("n", "ny avtale");
 		GeneriskVisning.printKommando("<", "forrige uke");
 		GeneriskVisning.printKommando(">", "neste uke");
@@ -61,21 +55,18 @@ public class KalenderKontroller extends AbstraktKontroller {
 			catch (NumberFormatException u) {
 				break;
 			}
-			new AvtaleKontroller(this.kd , avtaleId);
+			new AvtaleKontroller(avtaleId);
 			return;
 		} while (false);
 		switch (inn.charAt(0)) {
 		case 'a':
 			this.velgAnsatt();
 			break;
-		case 'g':
-			this.velgGruppe();
-			break;
 		case 'n':
-			new AvtaleKontroller(this.kd);
+			new AvtaleKontroller();
 			return;
 		case 'q':
-			GeneriskVisning.printTopp();
+			this.avslutt();
 			return;
 		case '<':
 			this.tid = new Date(this.tid.getTime() - 86400 * 7000);
@@ -94,14 +85,5 @@ public class KalenderKontroller extends AbstraktKontroller {
 			ansatt = Ansatt.medId(Integer.parseInt(ventStdInn()));
 		} while (ansatt == null);
 		this.ansatt = ansatt;
-	}
-	private void velgGruppe () throws SQLException, NumberFormatException, IOException {
-		Gruppe gruppe;
-		do {
-			GeneriskVisning.printTopp();
-			GeneriskVisning.printGrupper();
-			gruppe = Gruppe.medId(Integer.parseInt(ventStdInn()));
-		} while (ansatt == null);
-		this.gruppe = gruppe;
 	}
 }

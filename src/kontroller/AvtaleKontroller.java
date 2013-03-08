@@ -10,23 +10,19 @@ import visning.AvtaleVisning;
 import visning.GeneriskVisning;
 
 public class AvtaleKontroller extends AbstraktKontroller {
-	private KontrollerData kd;
 
-	public AvtaleKontroller(KontrollerData kd) throws Exception {
+	public AvtaleKontroller() throws Exception {
 		super();
-		this.kd = kd;
 		GeneriskVisning.printTopp();
 		this.nyAvtale();
 	}
-	public AvtaleKontroller(KontrollerData kd , int avtaleId) throws Exception {
+	public AvtaleKontroller(int avtaleId) throws Exception {
 		super();
-		this.kd = kd;
 		GeneriskVisning.printTopp();
 		this.visAvtale(avtaleId);
 	}
-	@SuppressWarnings("deprecation")
 	private void nyAvtale () throws Exception {
-		System.out.println("==Ny avtale==");
+		System.out.println("==Ny avtale==\n");
 		System.out.print("Navn: ");
 		String navn = ventStdInn();
 		System.out.print("Beskrivelse: ");
@@ -50,9 +46,9 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			avt.setBeskrivelse(beskrivelse);
 			avt.setStart(start);
 			avt.setSlutt(slutt);
-			avt.setAnsattId(this.kd.getInnlogga().getId());
+			avt.setAnsattId(KontrollerData.getInstans().getInnlogga().getId());
 			avt.oppdater();
-			new KalenderKontroller(this.kd);
+			new KalenderKontroller();
 			return;
 		}
 	}
@@ -68,10 +64,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			switch (this.ventStdInn().charAt(0)) {
 			case 'k':
-				new KalenderKontroller(this.kd);
+				new KalenderKontroller();
 				return;
 			case 'q':
-				return;
+				this.avslutt();
 			default:
 				break;
 			}

@@ -3,6 +3,8 @@ package visning;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import kontroller.KontrollerData;
+
 import bibliotek.Funksjon;
 
 
@@ -11,8 +13,8 @@ import modell.Gruppe;
 import modell.GruppeListe;
 
 public class GeneriskVisning {
-	public static void printTopp() {
-		System.out.println(Funksjon.strRepeat("\n" , 100));
+	public static void printTopp() throws SQLException {
+		System.out.println(Funksjon.strRepeat("\n" , 100) + "Logga inn som: " + KontrollerData.getInstans().getInnlogga().getNavn() + "\n");
 	}
 
 	public static void printKommando (String id , String navn) {

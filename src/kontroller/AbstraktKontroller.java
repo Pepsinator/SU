@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import bibliotek.Funksjon;
+
 public abstract class AbstraktKontroller {
 	private BufferedReader stdInn;
 
@@ -30,5 +32,10 @@ public abstract class AbstraktKontroller {
 			}
 		} while (false);
 		return s;
+	}
+
+	protected void avslutt () {
+		System.out.println(Funksjon.strRepeat("\n" , 100) + "Avslutta");
+		System.exit(0);
 	}
 }

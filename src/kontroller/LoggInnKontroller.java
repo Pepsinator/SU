@@ -1,10 +1,8 @@
 package kontroller;
 
-import visning.GeneriskVisning;
 import modell.Ansatt;
 
 public class LoggInnKontroller extends AbstraktKontroller {
-	private KontrollerData kd;
 
 	public LoggInnKontroller() throws Exception {
 		super();
@@ -23,8 +21,8 @@ public class LoggInnKontroller extends AbstraktKontroller {
 			}
 			break;
 		} while (true);
-		this.kd = new KontrollerData(res);
-		new KalenderKontroller(this.kd);
+		KontrollerData.getInstans(res);
+		new KalenderKontroller();
 	}
 
 	public static void main(String[] arg) throws Exception {
