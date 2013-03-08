@@ -11,12 +11,12 @@ import bibliotek.Database;
 public class Gruppe {
 	private int id;
 	private String navn;
-	private int gruppe_id;
+	private int rot_id;
 
 	Gruppe() {
 		this.id = 0;
 		this.navn = "";
-		this.gruppe_id = 0;
+		this.rot_id = 0;
 	}
 
 	public static Gruppe medId(int id) throws SQLException {
@@ -34,6 +34,7 @@ public class Gruppe {
 		}
 		grp.setId(res.getInt("id"));
 		grp.setNavn(res.getString("navn"));
+		grp.setRotId(res.getInt("rot_id"));
 		return grp;
 	}
 
@@ -53,11 +54,11 @@ public class Gruppe {
 		this.navn = navn;
 	}
 
-	public int getGruppeId() {
-		return this.gruppe_id;
+	public int getRotId() {
+		return this.rot_id;
 	}
 
-	public void setGruppeId(int id) {
-		this.gruppe_id = gruppe_id;
+	public void setRotId(int rot_id) {
+		this.rot_id = rot_id;
 	}
 }

@@ -14,7 +14,7 @@ public class GruppeListe {
 		return medSql("select id from gruppe;");
 	}
 
-	public static ArrayList<Gruppe> medGruppeId(int rotId) throws SQLException {
+	public static ArrayList<Gruppe> medRotId(int rotId) throws SQLException {
 		return medSql("select id from gruppe where gruppe_id=" + rotId + ";");
 	}
 

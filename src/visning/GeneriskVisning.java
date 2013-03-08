@@ -39,7 +39,7 @@ public class GeneriskVisning {
 			System.out.print(Funksjon.strRepeat("\t" , tab));
 			GeneriskVisning.printKommando("" + rot.getId() , rot.getNavn());
 		}
-		ArrayList<Gruppe> grl = GruppeListe.medGruppeId(rot.getId());
+		ArrayList<Gruppe> grl = GruppeListe.medRotId(rot.getId());
 		for (int i = 0; i < grl.size(); i++) {
 			GeneriskVisning.printGrupper(grl.get(i).getId(), tab + 1);
 		}
