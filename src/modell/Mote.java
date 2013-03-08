@@ -1,5 +1,7 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ public class Mote {
 		this.ansatt = null;
 	}
 
-	public static Mote medId(int id) throws SQLException {
+	public static Mote medId(int id) throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
 				.prepareStatement("select * from mote where id=" + id + ";");
@@ -37,7 +39,7 @@ public class Mote {
 		return mote;
 	}
 
-	public Ansatt getAnsatt () throws SQLException {
+	public Ansatt getAnsatt () throws SQLException, FileNotFoundException, IOException {
 		if (this.ansatt == null) {
 			this.ansatt = Ansatt.medId(this.ansatt_id);
 		}

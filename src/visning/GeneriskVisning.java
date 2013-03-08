@@ -1,5 +1,7 @@
 package visning;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -27,15 +29,15 @@ public class GeneriskVisning {
 		}
 	}
 
-	public static void printGrupper() throws SQLException {
+	public static void printGrupper() throws SQLException, FileNotFoundException, IOException {
 		GeneriskVisning.printGrupper(0, 1);
 	}
 
-	public static void printGrupper(int rotId) throws SQLException {
+	public static void printGrupper(int rotId) throws SQLException, FileNotFoundException, IOException {
 		GeneriskVisning.printGrupper(rotId, 1);
 	}
 
-	public static void printGrupper(int rotId, int tab) throws SQLException {
+	public static void printGrupper(int rotId, int tab) throws SQLException, FileNotFoundException, IOException {
 		Gruppe rot = Gruppe.medId(rotId);
 		if (rot != null) {
 			System.out.print(Funksjon.strRepeat("\t" , tab));

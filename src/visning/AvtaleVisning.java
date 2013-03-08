@@ -1,5 +1,7 @@
 package visning;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -9,7 +11,7 @@ import modell.Avtale;
 import modell.Mote;
 
 public class AvtaleVisning {
-	public static void visAvtale (Avtale avt) throws SQLException {
+	public static void visAvtale (Avtale avt) throws SQLException, FileNotFoundException, IOException {
 		System.out.println("==Avtaleinfo==\n");
 		System.out.println("Navn:      " + avt.getNavn());
 		System.out.println("Start:     " + avt.getStart());

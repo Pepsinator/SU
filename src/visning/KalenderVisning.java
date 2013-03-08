@@ -1,5 +1,7 @@
 package visning;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,7 +12,7 @@ import modell.AvtaleListe;
 
 public class KalenderVisning {
 	@SuppressWarnings("deprecation")
-	public static void print(Date tid, Ansatt ans) throws SQLException {
+	public static void print(Date tid, Ansatt ans) throws SQLException, FileNotFoundException, IOException {
 		GeneriskVisning.printTopp();
 		System.out.println("==Kalendervisning==\n");
 		Calendar kal = Calendar.getInstance();

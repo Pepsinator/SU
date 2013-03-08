@@ -1,5 +1,7 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ public class Gruppe {
 		this.rot_id = 0;
 	}
 
-	public static Gruppe medId(int id) throws SQLException {
+	public static Gruppe medId(int id) throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
 				.prepareStatement("select * from gruppe where id=" + id + ";");

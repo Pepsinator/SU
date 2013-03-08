@@ -1,5 +1,7 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,12 +12,12 @@ import java.util.Date;
 import bibliotek.Database;
 
 public class AvtaleListe {
-	public static ArrayList<Avtale> alle() throws SQLException {
+	public static ArrayList<Avtale> alle() throws SQLException, FileNotFoundException, IOException {
 		return medSql("select id from avtale;");
 	}
 
 	public static ArrayList<Avtale> medAnsattIdTidsrom(int ansattId, Date start,
-			Date slutt) throws SQLException {
+			Date slutt) throws SQLException, FileNotFoundException, IOException {
 		String starta = "from_unixtime(" + ((int) (start.getTime() * .001))
 				+ ")";
 		String slutta = "from_unixtime(" + ((int) (slutt.getTime() * .001))
@@ -27,7 +29,7 @@ public class AvtaleListe {
 				+ starta + " and " + slutta + " < slutt));");
 	}
 
-	public static ArrayList<Avtale> medSql(String sql) throws SQLException {
+	public static ArrayList<Avtale> medSql(String sql) throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling.prepareStatement(sql);
 		ResultSet res = beretning.executeQuery();

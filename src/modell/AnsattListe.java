@@ -1,5 +1,7 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,15 +12,15 @@ import bibliotek.Database;
 
 
 public class AnsattListe {
-	public static ArrayList<Ansatt> alle() throws SQLException {
+	public static ArrayList<Ansatt> alle() throws SQLException, FileNotFoundException, IOException {
 		return medSql("select id from ansatt;");
 	}
 
-	public static ArrayList<Ansatt> medMoteId(int avtaleId) throws SQLException {
+	public static ArrayList<Ansatt> medMoteId(int avtaleId) throws SQLException, FileNotFoundException, IOException {
 		return medSql("select a.ansatt_id from avtale as a,mote as m where a.mote_id=m.id and  a.id=" + avtaleId + ";");
 	}
 
-	public static ArrayList<Ansatt> medSql(String sql) throws SQLException {
+	public static ArrayList<Ansatt> medSql(String sql) throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling.prepareStatement(sql);
 		ResultSet res = beretning.executeQuery();

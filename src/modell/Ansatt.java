@@ -1,5 +1,7 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +23,7 @@ public class Ansatt {
 		this.navn = "";
 	}
 
-	public static Ansatt medId(int id) throws SQLException {
+	public static Ansatt medId(int id) throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
 				.prepareStatement("select * from ansatt where id=" + id + ";");
@@ -30,7 +32,7 @@ public class Ansatt {
 	}
 
 	public static Ansatt medLoggInn(String bruker, String passord)
-			throws SQLException {
+			throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
 				.prepareStatement("select * from ansatt where bruker=\"" + bruker + "\" and passord=\"" + passord + "\";");

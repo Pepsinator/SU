@@ -1,5 +1,7 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +13,7 @@ import bibliotek.Database;
 public class Status {
 	private int id;
 	private String navn;
-	public Status (int id) throws SQLException {
+	public Status (int id) throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
 				.prepareStatement("select * from status where id=" + id + ";");
@@ -25,7 +27,7 @@ public class Status {
 		this.navn = res.getString("navn");
 	}
 	private static Map<Integer , Status> instanser;
-	public static Status medId(int id) throws SQLException {
+	public static Status medId(int id) throws SQLException, FileNotFoundException, IOException {
 		if (instanser.get(id) == null) {
 			synchronized (Status .class) {
 				if (instanser.get(id) == null) {
