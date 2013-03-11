@@ -16,11 +16,11 @@ public class Avtale {
 	private String navn;
 	private Date start;
 	private Date slutt;
-	private int ansatt_id;
 	private int mote_id;
 	private String beskrivelse;
 
 	// latskapsinitialisering
+	private int ansatt_id;
 	private Ansatt ansatt;
 	private Mote mote;
 
@@ -57,7 +57,6 @@ public class Avtale {
 		if (res.getTimestamp("slutt") != null) {
 			avt.setSlutt(new Date(res.getTimestamp("slutt").getTime()));
 		}
-		avt.setAnsattId(res.getInt("ansatt_id"));
 		avt.setMoteId(res.getInt("mote_id"));
 		return avt;
 	}
@@ -69,17 +68,33 @@ public class Avtale {
 				+ "\",start=from_unixtime("
 				+ ((int) (this.start.getTime() * .001))
 				+ "),slutt=from_unixtime("
-				+ ((int) (this.start.getTime() * .001)) + "),ansatt_id="
-				+ this.ansatt_id;
-		if (this.mote_id != 0) {
-			sql += ",mote_id=" + this.mote_id;
-		}
+				+ ((int) (this.start.getTime() * .001)) + ")";
+//		if (this.mote_id != 0) {
+//			sql += ",mote_id=" + this.mote_id;
+//		}
 		sql += ",beskrivelse=\"" + this.beskrivelse + "\" where id=" + this.id
 				+ ";";
 		beretning.executeUpdate(sql);
 	}
 
+	public int getAnsattId () throws FileNotFoundException, SQLException, IOException {
+		if (this.ansatt_id == 0) {
+			Connection kobling = Database.getInstans().getKobling();
+			PreparedStatement beretning = kobling
+					.prepareStatement("select ansatt_id from ansatt_avtale where status_id=1 and avtale_id=" + this.id + ";");
+			ResultSet res = beretning.executeQuery();
+			if (!res.next()) {
+				return 0;
+			}
+			this.ansatt_id = res.getInt(0);
+		}
+		return this.ansatt_id;
+	}
+
 	public Ansatt getAnsatt() throws SQLException, FileNotFoundException, IOException {
+		if (this.ansatt_id == 0) {
+			return null;
+		}
 		if (this.ansatt == null) {
 			this.ansatt = Ansatt.medId(this.ansatt_id);
 		}
@@ -123,15 +138,6 @@ public class Avtale {
 
 	public void setSlutt(Date slutt) {
 		this.slutt = slutt;
-	}
-
-	public int getAnsattId() {
-		return this.ansatt_id;
-	}
-
-	public void setAnsattId(int ansatt_id) {
-		this.ansatt = null;
-		this.ansatt_id = ansatt_id;
 	}
 
 	public int getMoteId() {

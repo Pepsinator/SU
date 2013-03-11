@@ -1,5 +1,6 @@
 package kontroller;
 
+import visning.GeneriskVisning;
 import modell.Ansatt;
 
 public class LoggInnKontroller extends AbstraktKontroller {

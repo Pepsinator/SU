@@ -12,24 +12,41 @@ import java.util.Date;
 import bibliotek.Database;
 
 public class AvtaleListe {
-	public static ArrayList<Avtale> alle() throws SQLException, FileNotFoundException, IOException {
+	public static ArrayList<Avtale> alle() throws SQLException,
+			FileNotFoundException, IOException {
 		return medSql("select id from avtale;");
 	}
 
-	public static ArrayList<Avtale> medAnsattIdTidsrom(int ansattId, Date start,
-			Date slutt) throws SQLException, FileNotFoundException, IOException {
+	public static ArrayList<Avtale> medAnsattIdTidsrom(int ansattId,
+			Date start, Date slutt) throws SQLException, FileNotFoundException,
+			IOException {
 		String starta = "from_unixtime(" + ((int) (start.getTime() * .001))
 				+ ")";
 		String slutta = "from_unixtime(" + ((int) (slutt.getTime() * .001))
 				+ ")";
-		return medSql("select id from avtale where ansatt_id=" + ansattId + " and ((" + starta
-				+ " <= start and start < " + slutta + ") or (" + starta
-				+ " <= slutt and slutt < " + slutta + ") or (" + starta
-				+ " <= start and slutt < " + slutta + ") or (start <= "
-				+ starta + " and " + slutta + " < slutt));");
+		return medSql("select av.id from avtale as av,ansatt_avtale as aa where av.id=aa.avtale_id and aa.ansatt_id="
+				+ ansattId
+				+ " and (("
+				+ starta
+				+ " <= av.start and av.start < "
+				+ slutta
+				+ ") or ("
+				+ starta
+				+ " <= av.slutt and av.slutt < "
+				+ slutta
+				+ ") or ("
+				+ starta
+				+ " <= av.start and av.slutt < "
+				+ slutta
+				+ ") or (av.start <= "
+				+ starta
+				+ " and "
+				+ slutta
+				+ " < av.slutt));");
 	}
 
-	public static ArrayList<Avtale> medSql(String sql) throws SQLException, FileNotFoundException, IOException {
+	public static ArrayList<Avtale> medSql(String sql) throws SQLException,
+			FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling.prepareStatement(sql);
 		ResultSet res = beretning.executeQuery();

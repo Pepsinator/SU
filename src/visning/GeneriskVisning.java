@@ -30,21 +30,17 @@ public class GeneriskVisning {
 	}
 
 	public static void printGrupper() throws SQLException, FileNotFoundException, IOException {
-		GeneriskVisning.printGrupper(0, 1);
+		GeneriskVisning.printGrupper(0, 0);
 	}
 
 	public static void printGrupper(int rotId) throws SQLException, FileNotFoundException, IOException {
-		GeneriskVisning.printGrupper(rotId, 1);
+		GeneriskVisning.printGrupper(rotId, 0);
 	}
 
 	public static void printGrupper(int rotId, int tab) throws SQLException, FileNotFoundException, IOException {
-		Gruppe rot = Gruppe.medId(rotId);
-		if (rot != null) {
-			System.out.print(Funksjon.strRepeat("\t" , tab));
-			GeneriskVisning.printKommando("" + rot.getId() , rot.getNavn());
-		}
-		ArrayList<Gruppe> grl = GruppeListe.medRotId(rot.getId());
+		ArrayList<Gruppe> grl = GruppeListe.medRotId(rotId);
 		for (int i = 0; i < grl.size(); i++) {
+			GeneriskVisning.printKommando("" + grl.get(i).getId() , Funksjon.strRepeat(" " , tab * 4) + grl.get(i).getNavn());
 			GeneriskVisning.printGrupper(grl.get(i).getId(), tab + 1);
 		}
 	}

@@ -1,3 +1,5 @@
+/* VI TRENGER NOK IKKE DET HER... */
+
 package modell;
 
 import java.io.FileNotFoundException;
@@ -30,12 +32,21 @@ public class Mote {
 		return init(res);
 	}
 
+	public static Mote medAvtaleId(int avtaleId) throws SQLException, FileNotFoundException, IOException {
+		Connection kobling = Database.getInstans().getKobling();
+		PreparedStatement beretning = kobling
+				.prepareStatement("select * from mote where avtale_id=" + avtaleId + ";");
+		ResultSet res = beretning.executeQuery();
+		return init(res);
+	}
+
 	private static Mote init(ResultSet res) throws SQLException {
 		Mote mote = new Mote();
 		if (!res.next()) {
 			return null;
 		}
 		mote.setId(res.getInt("id"));
+		mote.setAnsattId(res.getInt("ansatt_id"));
 		return mote;
 	}
 
@@ -52,5 +63,9 @@ public class Mote {
 
 	public void setId (int id) {
 		this.id = id;
+	}
+
+	public void setAnsattId (int ansattId) {
+		this.ansatt_id = ansattId;
 	}
 }

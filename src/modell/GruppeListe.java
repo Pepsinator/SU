@@ -17,7 +17,7 @@ public class GruppeListe {
 	}
 
 	public static ArrayList<Gruppe> medRotId(int rotId) throws SQLException, FileNotFoundException, IOException {
-		return medSql("select id from gruppe where gruppe_id=" + rotId + ";");
+		return medSql("select id from gruppe where rot_id=" + (rotId == 0 ? "0 or rot_id is null" : rotId) + ";");
 	}
 
 	public static ArrayList<Gruppe> medSql(String sql) throws SQLException, FileNotFoundException, IOException {
