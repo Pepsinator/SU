@@ -46,7 +46,7 @@ public class KalenderKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("<", "forrige uke");
 		GeneriskVisning.printKommando(">", "neste uke");
 		GeneriskVisning.printKommando("q", "avslutt");
-		String inn = this.ventStdInn();
+		String inn = this.ventStdInn(); //heisann
 		do {
 			int avtaleId;
 			try {
