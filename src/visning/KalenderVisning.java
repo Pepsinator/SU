@@ -17,7 +17,7 @@ public class KalenderVisning {
 		System.out.println("==Kalendervisning==\n");
 		Calendar kal = Calendar.getInstance();
 		System.out.print("Uke: " + (new SimpleDateFormat("ww")).format(tid)
-				+ "/" + (new SimpleDateFormat("YYYY")).format(tid));
+				+ "/" + (new SimpleDateFormat("yyyy")).format(tid));
 		if (ans != null) {
 			System.out.print("     Ansatt: " + ans.getNavn());
 		}
@@ -31,7 +31,7 @@ public class KalenderVisning {
 		Date[] dag = new Date[7];
 		for (int i = 0; i < dager.length; i++) {
 			dag[i] = new Date(
-					(new Date((new SimpleDateFormat("YYYY/MM/dd")).format(tid)))
+					(new Date((new SimpleDateFormat("yyyy/MM/dd")).format(tid)))
 							.getTime()
 							+ 86400000
 							* (2 + i - kal.get(Calendar.DAY_OF_WEEK)));

@@ -31,9 +31,9 @@ public class KalenderKontroller extends AbstraktKontroller {
 		Calendar kal = Calendar.getInstance();
 		System.out.println();
 		@SuppressWarnings("deprecation")
-		Date ukestart = new Date((new Date((new SimpleDateFormat("YYYY/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 2));
+		Date ukestart = new Date((new Date((new SimpleDateFormat("yyyy/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 2));
 		@SuppressWarnings("deprecation")
-		Date ukeslutt = new Date((new Date((new SimpleDateFormat("YYYY/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 9));
+		Date ukeslutt = new Date((new Date((new SimpleDateFormat("yyyy/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 9));
 		ArrayList<Avtale> avtaler = AvtaleListe.medAnsattIdTidsrom(this.ansatt.getId(), ukestart , ukeslutt);
 		for (int i = 0; i < avtaler.size(); i++) {
 			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn());
