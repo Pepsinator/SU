@@ -9,6 +9,7 @@ import bibliotek.Funksjon;
 
 public abstract class AbstraktKontroller {
 	private BufferedReader stdInn;
+	//adasd
 
 	public AbstraktKontroller() {
 		this.stdInn = new BufferedReader(new InputStreamReader(System.in));
