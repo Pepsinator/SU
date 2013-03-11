@@ -31,12 +31,12 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		Date start;
 		do {
 			System.out.print("Starttid: ");
-			start = new SimpleDateFormat("dd.MM.YYYY hh:mm").parse(ventStdInn());
+			start = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
 		} while (start == null);
 		Date slutt;
 		do {
 			System.out.print("Slutttid: ");
-			slutt = new SimpleDateFormat("dd.MM.YYYY hh:mm").parse(ventStdInn());
+			slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
 		} while (start == null);
 		System.out.print("Er avtalen et møte? (y/?) ");
 		boolean er_mote = ventStdInn() == "y" ? true : false;
