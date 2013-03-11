@@ -3,11 +3,13 @@ package kontroller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 
 import bibliotek.Funksjon;
 
 public abstract class AbstraktKontroller {
 	private BufferedReader stdInn;
+	//adasd
 
 	public AbstraktKontroller() {
 		this.stdInn = new BufferedReader(new InputStreamReader(System.in));
@@ -24,13 +26,12 @@ public abstract class AbstraktKontroller {
 			if (s == null) {
 				continue;
 			}
-			if (!tillat_tomhet) {
-				s = s.replace("\n", "").replace("\r", "");
-			}
-			if (s.length() == 0) {
+			s = s.replace("\n", "").replace("\r", "");
+			if (s.length() == 0 && !tillat_tomhet) {
 				continue;
 			}
-		} while (false);
+			break;
+		} while (true);
 		return s;
 	}
 

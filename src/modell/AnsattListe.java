@@ -25,9 +25,15 @@ public class AnsattListe {
 		return medSql("select id from ansatt where id in(" + ider + ");");
 	}
 
+	public static ArrayList<Ansatt> medAvtaleId(int avtaleId) throws SQLException, FileNotFoundException, IOException {
+		return medSql("select aa.ansatt_id from avtale as av,ansatt_avtale as aa where av.id=aa.avtale_id and aa.avtale_id=" + avtaleId + ";");
+	}
+
+	/*
 	public static ArrayList<Ansatt> medMoteId(int avtaleId) throws SQLException, FileNotFoundException, IOException {
 		return medSql("select a.ansatt_id from avtale as a,mote as m where a.mote_id=m.id and  a.id=" + avtaleId + ";");
 	}
+	*/
 
 	public static ArrayList<Ansatt> utenGruppeIder(String ider) throws FileNotFoundException, SQLException, IOException {
 		return medSql("select id from ansatt where id not in (select ansatt_id as id from ansatt_gruppe where gruppe_id in(" + ider + "));");

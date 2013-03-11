@@ -68,7 +68,7 @@ public class Avtale {
 				+ "\",start=from_unixtime("
 				+ ((int) (this.start.getTime() * .001))
 				+ "),slutt=from_unixtime("
-				+ ((int) (this.start.getTime() * .001)) + ")";
+				+ ((int) (this.slutt.getTime() * .001)) + ")";
 //		if (this.mote_id != 0) {
 //			sql += ",mote_id=" + this.mote_id;
 //		}
@@ -91,7 +91,7 @@ public class Avtale {
 		return this.ansatt_id;
 	}
 
-	public Ansatt getAnsatt() throws SQLException, FileNotFoundException, IOException {
+	public Ansatt getMoteLeder() throws SQLException, FileNotFoundException, IOException {
 		if (this.ansatt_id == 0) {
 			return null;
 		}

@@ -59,7 +59,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Starttid: ");
 			try {
-				start = new SimpleDateFormat("dd.MM.YYYY hh:mm").parse(ventStdInn());
+				start = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
 			}
 			catch (ParseException u) {
 				start = null;
@@ -72,7 +72,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Slutttid: ");
 			try {
-				slutt = new SimpleDateFormat("dd.MM.YYYY hh:mm").parse(ventStdInn());
+				slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
 			}
 			catch (ParseException u) {
 				slutt = null;

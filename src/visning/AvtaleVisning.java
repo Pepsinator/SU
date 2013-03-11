@@ -17,17 +17,11 @@ public class AvtaleVisning {
 		System.out.println("Start:     " + avt.getStart());
 		System.out.println("Slutt:     " + avt.getSlutt());
 		System.out.println();
-		Mote m = avt.getMote();
-		if (m != null) {
-			System.out.println("Møteleder: " + m.getAnsatt().getNavn());
+		ArrayList<Ansatt> deltakere = AnsattListe.medAvtaleId(avt.getId());
+		if (deltakere.size() > 0) {
+			System.out.println("Møteleder: " + avt.getMoteLeder().getNavn());
 			System.out.println("\nDeltakere:");
-			ArrayList<Ansatt> ansatte = AnsattListe.medMoteId(m.getId());
-			if (ansatte.size() > 0) {
-				GeneriskVisning.printAnsatte(ansatte);
-			}
-			else {
-				System.out.println("\tIngen deltakere.");
-			}
+			GeneriskVisning.printAnsatte(deltakere);
 			System.out.println();
 		}
 	}
