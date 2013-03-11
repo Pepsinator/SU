@@ -37,7 +37,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Slutttid: ");
 			slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
-		} while (start == null);
+		} while (slutt == null);
 		System.out.print("Er avtalen et møte? (y/?) ");
 		boolean er_mote = ventStdInn() == "y" ? true : false;
 		if (!er_mote) {

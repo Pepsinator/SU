@@ -69,7 +69,7 @@ public class Avtale {
 				+ "\",start=from_unixtime("
 				+ ((int) (this.start.getTime() * .001))
 				+ "),slutt=from_unixtime("
-				+ ((int) (this.start.getTime() * .001)) + "),ansatt_id="
+				+ ((int) (this.slutt.getTime() * .001)) + "),ansatt_id="
 				+ this.ansatt_id;
 		if (this.mote_id != 0) {
 			sql += ",mote_id=" + this.mote_id;
