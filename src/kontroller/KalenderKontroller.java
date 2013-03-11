@@ -29,7 +29,7 @@ public class KalenderKontroller extends AbstraktKontroller {
 	private void visKalender() throws Exception {
 		KalenderVisning.print(this.tid , this.ansatt);
 		Calendar kal = Calendar.getInstance();
-		System.out.println();
+		System.out.println();//flak
 		@SuppressWarnings("deprecation")
 		Date ukestart = new Date((new Date((new SimpleDateFormat("yyyy/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 2));
 		@SuppressWarnings("deprecation")
@@ -47,7 +47,7 @@ public class KalenderKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando(">", "neste uke");
 		GeneriskVisning.printKommando("q", "avslutt");
 		String inn = this.ventStdInn(); //heisann
-		do { //tillegg
+		do { //htdhdhhrd
 			int avtaleId;
 			try {
 				avtaleId = Integer.parseInt(inn);
