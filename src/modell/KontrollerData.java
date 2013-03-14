@@ -1,8 +1,7 @@
-package kontroller;
+package modell;
 
 import java.sql.SQLException;
 
-import modell.Ansatt;
 
 public class KontrollerData {
 	private static KontrollerData instans;

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 
 import bibliotek.Database;
@@ -16,13 +17,12 @@ public class Avtale {
 	private String navn;
 	private Date start;
 	private Date slutt;
-	private int mote_id;
+	private String sted;
 	private String beskrivelse;
 
 	// latskapsinitialisering
 	private int moteleder_id;
 	private Ansatt moteleder;
-	private Mote mote;
 
 	public Avtale() {
 		this.id = 0;
@@ -67,8 +67,8 @@ public class Avtale {
 				+ "\",start=from_unixtime("
 				+ ((int) (this.start.getTime() * .001))
 				+ "),slutt=from_unixtime("
-				+ ((int) (this.slutt.getTime() * .001)) + ")"
-				+ ",beskrivelse=\"" + this.beskrivelse
+				+ ((int) (this.slutt.getTime() * .001)) + ")" + ",sted=\""
+				+ this.sted + "\",beskrivelse=\"" + this.beskrivelse
 				+ "\",endra=from_unixtime("
 				+ ((int) (new Date().getTime() * .001)) + ") where id="
 				+ this.id + ";";
@@ -103,6 +103,11 @@ public class Avtale {
 		return this.moteleder;
 	}
 
+	public ArrayList<Ansatt> getDeltakere() throws FileNotFoundException,
+			SQLException, IOException {
+		return AnsattListe.medAvtaleId(this.id);
+	}
+
 	public int getId() {
 		return this.id;
 	}
@@ -133,6 +138,14 @@ public class Avtale {
 
 	public void setSlutt(Date slutt) {
 		this.slutt = slutt;
+	}
+
+	public String getSted() {
+		return this.sted;
+	}
+
+	public void setSted(String sted) {
+		this.sted = sted;
 	}
 
 	public String getBeskrivelse() {

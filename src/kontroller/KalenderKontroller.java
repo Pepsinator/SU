@@ -11,6 +11,7 @@ import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.AvtaleListe;
+import modell.KontrollerData;
 
 import visning.GeneriskVisning;
 import visning.KalenderVisning;
