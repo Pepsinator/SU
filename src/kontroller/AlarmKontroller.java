@@ -2,9 +2,11 @@ package kontroller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import visning.AlarmVisning;
 import visning.GeneriskVisning;
+import modell.Alarm;
 import modell.Avtale;
 
 public class AlarmKontroller extends AbstraktKontroller {
@@ -33,6 +35,11 @@ public class AlarmKontroller extends AbstraktKontroller {
 		case('n'):
 			//Nytt varsel
 		}
+	}
+	
+	public ArrayList<Alarm> hentAlarmer(){
+		
+		return null;
 	}
 	
 	public void visValgtAlarm(Avtale avtale) throws SQLException{

@@ -11,6 +11,9 @@ public class Alarm {
 		this.avtale_id = 0;
 	}
 	
+	public static hentAlarm(){
+		
+	}
 	
 	
 	
