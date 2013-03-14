@@ -30,6 +30,16 @@ public class Alarm {
 		
 	}
 	
+	// henter alarm med en ansatt sin avtale
+	public static Alarm medAnsattIdAvtaleId(int ansattId, int avtaleId) throws FileNotFoundException, SQLException, IOException{
+		Connection kobling = Database.getInstans().getKobling();
+		PreparedStatement beretning = kobling
+				.prepareStatement("select * from alarm where ansatt_id=" + ansattId + " and avtale_id=" + avtaleId + ";");
+		ResultSet res = beretning.executeQuery();
+		return init(res);
+		
+	}
+	
 	//initialiserer et alarmobjekt
 	private static Alarm init(ResultSet res) throws SQLException {
 		if (!res.next()) {

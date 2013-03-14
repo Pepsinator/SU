@@ -168,7 +168,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
-		if (ansattId == avt.getMotelederId()) {
+		if (avt.erDeltakerMedId(ansattId)) {
 			GeneriskVisning.printKommando("v", "alarm");
 			GeneriskVisning.printKommando("e", "endre");
 		}
@@ -178,8 +178,8 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			switch (this.ventStdInn().charAt(0)) {
 			case 'v':
-				if (ansattId == avt.getMotelederId()) {
-					new AlarmKontroller(avtaleId);
+				if (avt.erDeltakerMedId(ansattId)) {
+					new AlarmKontroller(ansattId, avtaleId);
 					return;
 				}
 				break;

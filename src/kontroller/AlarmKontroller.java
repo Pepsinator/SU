@@ -23,6 +23,11 @@ public class AlarmKontroller extends AbstraktKontroller {
 		visValgtAlarm(Alarm.medId(alarmId));
 	}
 	
+	public AlarmKontroller(int ansattId, int avtaleId) throws SQLException, FileNotFoundException, IOException{
+		super();
+		visValgtAlarm(Alarm.medAnsattIdAvtaleId(ansattId, avtaleId));
+	}
+	
 	public void visAlarmer() throws Exception{
 		GeneriskVisning.printTopp();
 		AlarmVisning.printAlarmer();
@@ -55,7 +60,22 @@ public class AlarmKontroller extends AbstraktKontroller {
 	
 	public void visValgtAlarm(Alarm alarm) throws SQLException, FileNotFoundException, IOException{
 		GeneriskVisning.printTopp();
-		AlarmVisning.visAlarm(alarm);
+		if (alarm == null) {
+			System.out.println("Du har ikke lagt til noen alarm for denne avtalen ennå.");
+		}
+		else {
+			AlarmVisning.visAlarm(alarm);
+		}
+		GeneriskVisning.printKommando("e", "endre");
+		do {
+			switch (this.ventStdInn().charAt(0)) {
+			case 'e':
+				//this.endreAlarm(alarm.getId());
+				return;
+			default:
+				break;
+			}
+		} while (true);
 	}
 
 }

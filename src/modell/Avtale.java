@@ -108,6 +108,16 @@ public class Avtale {
 		return AnsattListe.medAvtaleId(this.id);
 	}
 
+	public boolean erDeltakerMedId (int ansattId) throws FileNotFoundException, SQLException, IOException {
+		ArrayList<Ansatt> deltakere = this.getDeltakere();
+		for (int i = 0; i < deltakere.size(); i++) {
+			if (ansattId == deltakere.get(i).getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public int getId() {
 		return this.id;
 	}
