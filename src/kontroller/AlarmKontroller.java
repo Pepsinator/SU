@@ -1,5 +1,6 @@
 package kontroller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ public class AlarmKontroller extends AbstraktKontroller {
 		visAlarmer();
 	}
 	
-	public AlarmKontroller(Avtale avtale) throws SQLException{
+	public AlarmKontroller(int avtaleId) throws SQLException, FileNotFoundException, IOException{
 		super();
-		visValgtAlarm(avtale);
+		visValgtAlarm(Avtale.medId(avtaleId));
 	}
 	
 	public void visAlarmer() throws Exception{
