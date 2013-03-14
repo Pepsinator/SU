@@ -66,6 +66,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 		else {
 			AlarmVisning.visAlarm(alarm);
 		}
+		System.out.println();
 		GeneriskVisning.printKommando("e", "endre");
 		do {
 			switch (this.ventStdInn().charAt(0)) {

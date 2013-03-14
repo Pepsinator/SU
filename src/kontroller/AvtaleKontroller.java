@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.KontrollerData;
+import modell.RomListe;
 import visning.AvtaleVisning;
 import visning.GeneriskVisning;
 
@@ -25,15 +27,18 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		super();
 		this.nyAvtale();
 	}
+
 	public AvtaleKontroller(int avtaleId) throws Exception {
 		super();
 		GeneriskVisning.printTopp();
 		this.visAvtale(avtaleId);
 	}
-	private void nyAvtale () throws Exception {
+
+	private void nyAvtale() throws Exception {
 		this.endreAvtale(0);
 	}
-	private void endreAvtale (int avtaleId) throws Exception {
+
+	private void endreAvtale(int avtaleId) throws Exception {
 		GeneriskVisning.printTopp();
 		Avtale avt = null;
 		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
@@ -48,7 +53,8 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				return;
 			}
 		}
-		System.out.println("==" + (avtaleId > 0 ? "Endre" : "Ny") + " avtale==\n");
+		System.out.println("==" + (avtaleId > 0 ? "Endre" : "Ny")
+				+ " avtale==\n");
 		if (avtaleId > 0) {
 			ansattId = avt.getMotelederId();
 			System.out.println("Gammelt navn: " + avt.getNavn());
@@ -68,9 +74,9 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Starttid: ");
 			try {
-				start = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
-			}
-			catch (ParseException u) {
+				start = new SimpleDateFormat("dd.MM.yyyy hh:mm")
+						.parse(ventStdInn());
+			} catch (ParseException u) {
 				start = null;
 			}
 		} while (start == null);
@@ -81,85 +87,127 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Slutttid: ");
 			try {
-				slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm").parse(ventStdInn());
-			}
-			catch (ParseException u) {
+				slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm")
+						.parse(ventStdInn());
+			} catch (ParseException u) {
 				slutt = null;
 			}
 		} while (slutt == null);
-		boolean er_mote = false;
-		if (avtaleId > 0) {
-			er_mote = avt.getDeltakere().size() > 1;
-		}
-		else {
+		boolean moteinfo = false;
+		if (avtaleId == 0) {
 			System.out.print("Er avtalen et møte? (y/*) ");
-			er_mote = this.ventStdInn().charAt(0) == 'y';
+			moteinfo = this.ventStdInn().charAt(0) == 'y';
 		}
-		if (!er_mote) {
+		String sted = "";
+		int romId = 0;
+		ArrayList<Ansatt> ansatte;
+		if (moteinfo) {
+			ArrayList<Ansatt> u_ansatte;
+			System.out
+					.println("Hvilke grupper skal være med på møtet? Skriv id-ene separert med komma:");
+			GeneriskVisning.printGrupper();
+			String inn;
+			do {
+				inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll(
+						"\\s*", "");
+				if (Funksjon.sjekkIder(inn)) {
+					ansatte = AnsattListe.medGruppeIder(inn);
+					u_ansatte = AnsattListe.utenGruppeIder(inn);
+					for (int i = 0; i < u_ansatte.size(); i++) {
+						if (u_ansatte.get(i).getId() == ansattId) {
+							u_ansatte.remove(i);
+							break;
+						}
+					}
+					break;
+				}
+				System.out.println("Klarte ikke å tolke. Prøv igjen.");
+			} while (true);
+			System.out
+					.println("Hvilke ansatte (utenom gruppene) skal være med på møtet? Skriv id-ene separert med komma:");
+			GeneriskVisning.printAnsatte(u_ansatte);
+			do {
+				inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll(
+						"\\s*", "");
+				if (Funksjon.sjekkIder(inn)) {
+					ansatte = AnsattListe.utvidMedIder(ansatte, inn);
+					for (int i = 0; i < ansatte.size(); i++) {
+						if (ansatte.get(i).getId() == ansattId) {
+							ansatte.remove(i);
+							break;
+						}
+					}
+					if (ansatte.size() > 0) {
+						break;
+					}
+					System.out.println("Ingen ansatte. Velg igjen.");
+					continue;
+				}
+				System.out.println("Klarte ikke å tolke. Prøv igjen.");
+			} while (true);
+			ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
+			System.out.println("Hvilket rom med minimum " + ansatte.size()
+					+ " i kapasitet?");
+			GeneriskVisning.printRom(RomListe.medMinimumKapasitet(ansatte
+					.size()));
+			do {
+				inn = this.ventStdInn();
+				try {
+					romId = Integer.parseInt(inn);
+					break;
+				} catch (NumberFormatException u) {
+					continue;
+				}
+			} while (false);
+		} else {
+			ansatte = null;
 			if (avtaleId > 0) {
 				System.out.println("Gammelt sted: " + avt.getSted());
 			}
 			System.out.println("Sted (hva som helst): ");
-			String sted = this.ventStdInn();
-			avt = Avtale.medId(Database.nyRad("avtale"));
-			this.oppdaterAvtale(avt , navn , beskrivelse , start , slutt , sted , ansattId);
-			new KalenderKontroller();
-			return;
+			sted = this.ventStdInn(true);
 		}
-		System.out.println("Hvilke grupper skal være med på møtet? Skriv id-ene separert med komma:");
-		GeneriskVisning.printGrupper();
-		String inn;
-		ArrayList<Ansatt> ansatte;
-		do {
-			inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll("\\s*" , "");
-			if (Funksjon.sjekkIder(inn)) {
-				ansatte = AnsattListe.utenGruppeIder(inn);
-				for (int i = 0; i < ansatte.size(); i++) {
-					if (ansatte.get(i).getId() == ansattId) {
-						ansatte.remove(i);
-						break;
-					}
-				}
-				if (ansatte.size() > 0) {
-					break;
-				}
-				System.out.println("Ingen ansatte. Velg igjen.");
-				continue;
-			}
-			System.out.println("Klarte ikke å tolke. Prøv igjen.");
-		} while (true);
-		System.out.println("Hvilke ansatte (utenom gruppene) skal være med på møtet? Skriv id-ene separert med komma:");
-		GeneriskVisning.printAnsatte(ansatte);
-		do {
-			inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll("\\s*" , "");
-			if (Funksjon.sjekkIder(inn)) {
-				ansatte = AnsattListe.utvidMedIder(ansatte , inn);
-				for (int i = 0; i < ansatte.size(); i++) {
-					if (ansatte.get(i).getId() == ansattId) {
-						ansatte.remove(i);
-						break;
-					}
-				}
-				if (ansatte.size() > 0) {
-					break;
-				}
-				System.out.println("Ingen ansatte. Velg igjen.");
-				continue;
-			}
-			System.out.println("Klarte ikke å tolke. Prøv igjen.");
-		} while (true);
-		ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
-		System.out.println("Hvilket rom med minimum " + ansatte.size() + " i kapasitet?");
+		if (avt == null) {
+			avt = Avtale.medId(Database.nyRad("avtale"));
+		}
+		this.oppdaterAvtale(avt, navn, beskrivelse, start, slutt, sted, romId,
+				ansattId, ansatte);
+		new KalenderKontroller();
+		return;
 	}
-	private void oppdaterAvtale (Avtale avt , String navn , String beskrivelse , Date start , Date slutt , String sted , int ansattId) throws FileNotFoundException, SQLException, IOException, Exception {
+
+	private void oppdaterAvtale(Avtale avt, String navn, String beskrivelse,
+			Date start, Date slutt, String sted, int romId, int ansattId,
+			ArrayList<Ansatt> ansatte) throws FileNotFoundException,
+			SQLException, IOException, Exception {
 		avt.setNavn(navn);
 		avt.setBeskrivelse(beskrivelse);
 		avt.setStart(start);
 		avt.setSlutt(slutt);
 		avt.setSted(sted);
-		avt.oppdater();//må få med relasjoner til alle deltakerne
+		avt.setRomId(romId);
+		avt.oppdater();
+		if (ansatte == null) {
+			// avtalen/møtet fins allerede, og det skal ikke legges til noen nye deltakere
+			Connection kobling = Database.getInstans().getKobling();
+			Statement beretning = kobling.createStatement();
+			String sql = "update ansatt_avtale set status_id = 5 where status_id != 1 and avtale_id = " + avt.getId() + ";";
+			beretning.executeUpdate(sql);
+		}
+		else {
+			// avtalen/møtet er nytt, og deltakere må legges til
+			Connection kobling = Database.getInstans().getKobling();
+			Statement beretning;
+			String sql;
+			for (int i = 0; i < ansatte.size(); i++) {
+				beretning = kobling.createStatement();
+				sql = "insert into ansatt_avtale (ansatt_id,avtale_id,status_id) values(" + ansatte.get(i).getId() + "," + avt.getId() + "," + (ansattId == ansatte.get(i).getId() ? "1" : "2") + ");";
+				beretning.executeUpdate(sql);
+			}
+		}
 	}
-	private void visAvtale (int avtaleId) throws Exception {
+
+	private void visAvtale(int avtaleId) throws Exception {
 		GeneriskVisning.printTopp();
 		Avtale avt = Avtale.medId(avtaleId);
 		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
@@ -202,6 +250,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			}
 		} while (true);
 	}
+
 	private void slettAvtale(int avtaleId) throws Exception {
 		GeneriskVisning.printTopp();
 		Avtale avt = Avtale.medId(avtaleId);
@@ -216,7 +265,8 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
-				.prepareStatement("delete from avtale where id=" + avtaleId + ";");
+				.prepareStatement("update avtale set aktiv=0 where id=" + avtaleId
+						+ ";");
 		beretning.executeQuery();
 		System.out.println("Avtale er sletta. Trykk linjeskift...");
 		this.ventStdInn(true);

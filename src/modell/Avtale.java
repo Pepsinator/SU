@@ -18,6 +18,8 @@ public class Avtale {
 	private Date start;
 	private Date slutt;
 	private String sted;
+	private int rom_id;
+
 	private String beskrivelse;
 
 	// latskapsinitialisering
@@ -68,7 +70,7 @@ public class Avtale {
 				+ ((int) (this.start.getTime() * .001))
 				+ "),slutt=from_unixtime("
 				+ ((int) (this.slutt.getTime() * .001)) + ")" + ",sted=\""
-				+ this.sted + "\",beskrivelse=\"" + this.beskrivelse
+				+ this.sted + "\",rom_id=" + this.rom_id + ",beskrivelse=\"" + this.beskrivelse
 				+ "\",endra=from_unixtime("
 				+ ((int) (new Date().getTime() * .001)) + ") where id="
 				+ this.id + ";";
@@ -156,6 +158,13 @@ public class Avtale {
 
 	public void setSted(String sted) {
 		this.sted = sted;
+	}
+	public int getRomId() {
+		return rom_id;
+	}
+
+	public void setRomId(int rom_id) {
+		this.rom_id = rom_id;
 	}
 
 	public String getBeskrivelse() {

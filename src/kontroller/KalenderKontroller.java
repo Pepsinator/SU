@@ -51,9 +51,10 @@ public class KalenderKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("q", "avslutt");
 		
 		
-		String inn = this.ventStdInn();
+		String inn;
+		int avtaleId;
 		do {
-			int avtaleId;
+			inn = this.ventStdInn();
 			try {
 				avtaleId = Integer.parseInt(inn);
 			}
@@ -85,12 +86,18 @@ public class KalenderKontroller extends AbstraktKontroller {
 		}
 		this.visKalender();
 	}
-	private void velgAnsatt () throws SQLException, NumberFormatException, IOException {
-		Ansatt ansatt;
+	private void velgAnsatt () throws SQLException, IOException {
+		Ansatt ansatt = null;
 		do {
 			GeneriskVisning.printTopp();
+			System.out.println("Velg en ansatt:\n");
 			GeneriskVisning.printAnsatte(AnsattListe.alle());
-			ansatt = Ansatt.medId(Integer.parseInt(ventStdInn()));
+			try {
+				ansatt = Ansatt.medId(Integer.parseInt(ventStdInn()));
+			}
+			catch (NumberFormatException u) {
+				continue;
+			}
 		} while (ansatt == null);
 		this.ansatt = ansatt;
 	}

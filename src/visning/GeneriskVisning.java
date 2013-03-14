@@ -13,6 +13,7 @@ import modell.Ansatt;
 import modell.Gruppe;
 import modell.GruppeListe;
 import modell.KontrollerData;
+import modell.Rom;
 
 public class GeneriskVisning {
 	public static void printTopp() throws SQLException {
@@ -42,6 +43,11 @@ public class GeneriskVisning {
 		for (int i = 0; i < grl.size(); i++) {
 			GeneriskVisning.printKommando("" + grl.get(i).getId() , Funksjon.strRepeat(" " , tab * 4) + grl.get(i).getNavn());
 			GeneriskVisning.printGrupper(grl.get(i).getId(), tab + 1);
+		}
+	}
+	public static void printRom (ArrayList<Rom> rom) {
+		for (int i = 0; i < rom.size(); i++) {
+			GeneriskVisning.printKommando("" + rom.get(i).getId() , rom.get(i).getNavn());
 		}
 	}
 }
