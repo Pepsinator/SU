@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import visning.AlarmVisning;
 import visning.GeneriskVisning;
 import modell.Alarm;
+import modell.AlarmListe;
 import modell.Avtale;
 
 public class AlarmKontroller extends AbstraktKontroller {
@@ -24,7 +25,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 	
 	public void visAlarmer() throws Exception{
 		GeneriskVisning.printTopp();
-		System.out.println("Alattrmer:\n");
+		System.out.println("Alarmer:\n");
 		AlarmVisning.printAlarmer();
 		GeneriskVisning.printKommando("t", "tilbake");
 		GeneriskVisning.printKommando("n", "nytt varsel");
@@ -36,11 +37,6 @@ public class AlarmKontroller extends AbstraktKontroller {
 		case('n'):
 			//Nytt varsel
 		}
-	}
-	
-	public ArrayList<Alarm> hentAlarmer(){
-		
-		return null;
 	}
 	
 	public void visValgtAlarm(Avtale avtale) throws SQLException{

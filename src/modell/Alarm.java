@@ -1,5 +1,14 @@
 package modell;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import bibliotek.Database;
+
 public class Alarm {
 	private int id;
 	private int avtale_id;
@@ -11,10 +20,59 @@ public class Alarm {
 		this.avtale_id = 0;
 	}
 	
-	public static hentAlarm(){
+	// henter alarm med spesifikk id fra databasen
+	public static Alarm medId(int alarmId) throws FileNotFoundException, SQLException, IOException{
+		Connection kobling = Database.getInstans().getKobling();
+		PreparedStatement beretning = kobling
+				.prepareStatement("select * from alarm where id=" + alarmId + ";");
+		ResultSet res = beretning.executeQuery();
+		return init(res);
 		
 	}
 	
+	//initialiserer et alarmobjekt
+	private static Alarm init(ResultSet res) throws SQLException {
+		if (!res.next()) {
+			return null;
+		}
+		Alarm alarm = new Alarm();
+		alarm.setAvtale_id(res.getInt("avtale_id"));
+		alarm.setAnsatt_id(res.getInt("ansatt_id"));
+		alarm.setTidForAvtale(res.getInt("tid_for"));
+		alarm.setId(res.getInt("id"));
+		return alarm;
+	}
 	
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getAvtale_id() {
+		return avtale_id;
+	}
+
+	public void setAvtale_id(int avtale_id) {
+		this.avtale_id = avtale_id;
+	}
+
+	public int getAnsatt_id() {
+		return ansatt_id;
+	}
+
+	public void setAnsatt_id(int ansatt_id) {
+		this.ansatt_id = ansatt_id;
+	}
+
+	public int getTidForAvtale() {
+		return tidForAvtale;
+	}
+	
+	public void setTidForAvtale(int tidForAvtale) {
+		this.tidForAvtale = tidForAvtale;
+	}
 	
 }
