@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import bibliotek.Funksjon;
+
 import modell.Alarm;
 import modell.AlarmListe;
 import modell.Avtale;
@@ -29,11 +31,14 @@ public class AlarmVisning {
 		
 		System.out.println("" + alarm.getAvtale_id() + "\t\t\t"
 				+ Avtale.medId(alarm.getAvtale_id()).getNavn() + "\t\t\t"  // henter avtalenavnet
-				+ alarm.getTidForAvtale());
+				+ Funksjon.sekTilTid(alarm.getTidForAvtale()));
 	}
 	
-	public static void visAlarm(Alarm alarm){
-		
+	public static void visAlarm(Alarm alarm) throws FileNotFoundException, SQLException, IOException{
+		System.out.println("Alarm:\n");
+		System.out.println("ID:\t\t" + alarm.getId());
+		System.out.println("Avtale:\t\t" + Avtale.medId(alarm.getAvtale_id()).getNavn());
+		System.out.println("Tid før avtale:\t" + Funksjon.sekTilTid(alarm.getTidForAvtale()));
 	}
 	
 }

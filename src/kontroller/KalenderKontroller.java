@@ -77,10 +77,10 @@ public class KalenderKontroller extends AbstraktKontroller {
 			new AlarmKontroller();
 			return;
 		case '<':
-			this.tid = new Date(this.tid.getTime() - 86400 * 7000);
+			this.tid = new Date(this.tid.getTime() - 86400000 * 7);
 			break;
 		case '>':
-			this.tid = new Date(this.tid.getTime() + 86400 * 7000);
+			this.tid = new Date(this.tid.getTime() + 86400000 * 7);
 			break;
 		}
 		this.visKalender();

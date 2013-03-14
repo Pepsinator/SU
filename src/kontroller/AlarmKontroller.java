@@ -53,7 +53,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 		}
 	}
 	
-	public void visValgtAlarm(Alarm alarm) throws SQLException{
+	public void visValgtAlarm(Alarm alarm) throws SQLException, FileNotFoundException, IOException{
 		GeneriskVisning.printTopp();
 		AlarmVisning.visAlarm(alarm);
 	}
