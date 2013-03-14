@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
-import modell.Mote;
 
 public class AvtaleVisning {
 	public static void visAvtale (Avtale avt) throws SQLException, FileNotFoundException, IOException {
@@ -18,7 +17,7 @@ public class AvtaleVisning {
 		System.out.println("Slutt:     " + avt.getSlutt());
 		System.out.println();
 		ArrayList<Ansatt> deltakere = AnsattListe.medAvtaleId(avt.getId());
-		if (deltakere.size() > 0) {
+		if (deltakere.size() > 1) {
 			System.out.println("Møteleder: " + avt.getMoteleder().getNavn());
 			System.out.println("\nDeltakere:");
 			GeneriskVisning.printAnsatte(deltakere);

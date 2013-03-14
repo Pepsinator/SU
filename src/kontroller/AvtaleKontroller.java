@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +15,7 @@ import bibliotek.Funksjon;
 import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
-import modell.Mote;
+import modell.KontrollerData;
 import visning.AvtaleVisning;
 import visning.GeneriskVisning;
 
@@ -38,9 +37,19 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		GeneriskVisning.printTopp();
 		Avtale avt = null;
 		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
-		System.out.println("==" + (avtaleId > 0 ? "Endre" : "Ny") + " avtale==\n");
 		if (avtaleId > 0) {
 			avt = Avtale.medId(avtaleId);
+			if (avt == null) {
+				System.out.println("Valgt avtale fins ikke.");
+				return;
+			}
+			if (ansattId != avt.getMotelederId()) {
+				System.out.println("Du har ikke adgang.");
+				return;
+			}
+		}
+		System.out.println("==" + (avtaleId > 0 ? "Endre" : "Ny") + " avtale==\n");
+		if (avtaleId > 0) {
 			ansattId = avt.getMotelederId();
 			System.out.println("Gammelt navn: " + avt.getNavn());
 		}
@@ -66,7 +75,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			}
 		} while (start == null);
 		if (avtaleId > 0) {
-			System.out.println("Gammel sluttid: " + avt.getStart());
+			System.out.println("Gammel sluttid: " + avt.getSlutt());
 		}
 		Date slutt;
 		do {
@@ -79,18 +88,21 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			}
 		} while (slutt == null);
 		boolean er_mote = false;
-		Mote mote = null;
 		if (avtaleId > 0) {
-			mote = Mote.medAvtaleId(avtaleId);
-			er_mote = mote != null;
+			er_mote = avt.getDeltakere().size() > 1;
 		}
 		else {
 			System.out.print("Er avtalen et møte? (y/*) ");
 			er_mote = this.ventStdInn().charAt(0) == 'y';
 		}
 		if (!er_mote) {
+			if (avtaleId > 0) {
+				System.out.println("Gammelt sted: " + avt.getSted());
+			}
+			System.out.println("Sted (hva som helst): ");
+			String sted = this.ventStdInn();
 			avt = Avtale.medId(Database.nyRad("avtale"));
-			this.oppdaterAvtale(avt , navn , beskrivelse , start , slutt , ansattId);
+			this.oppdaterAvtale(avt , navn , beskrivelse , start , slutt , sted , ansattId);
 			new KalenderKontroller();
 			return;
 		}
@@ -139,30 +151,44 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
 		System.out.println("Hvilket rom med minimum " + ansatte.size() + " i kapasitet?");
 	}
-	private void oppdaterAvtale (Avtale avt , String navn , String beskrivelse , Date start , Date slutt , int ansattId) throws FileNotFoundException, SQLException, IOException, Exception {
+	private void oppdaterAvtale (Avtale avt , String navn , String beskrivelse , Date start , Date slutt , String sted , int ansattId) throws FileNotFoundException, SQLException, IOException, Exception {
 		avt.setNavn(navn);
 		avt.setBeskrivelse(beskrivelse);
 		avt.setStart(start);
 		avt.setSlutt(slutt);
+		avt.setSted(sted);
 		avt.oppdater();
 	}
 	private void visAvtale (int avtaleId) throws Exception {
 		GeneriskVisning.printTopp();
 		Avtale avt = Avtale.medId(avtaleId);
+		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
 		if (avt == null) {
 			System.out.println("Valgt avtale fins ikke.");
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
-		GeneriskVisning.printKommando("e", "endre");
+		if (ansattId == avt.getMotelederId()) {
+			GeneriskVisning.printKommando("a", "alarm");
+			GeneriskVisning.printKommando("e", "endre");
+		}
 		GeneriskVisning.printKommando("s", "slett");
 		GeneriskVisning.printKommando("k", "kalender");
 		GeneriskVisning.printKommando("q", "avslutt");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
+			case 'a':
+				if (ansattId == avt.getMotelederId()) {
+					new AlarmKontroller(avtaleId);
+					return;
+				}
+				break;
 			case 'e':
-				this.endreAvtale(avtaleId);
-				return;
+				if (ansattId == avt.getMotelederId()) {
+					this.endreAvtale(avtaleId);
+					return;
+				}
+				break;
 			case 's':
 				this.slettAvtale(avtaleId);
 				return;
