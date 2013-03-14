@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import kontroller.KontrollerData;
 
 import bibliotek.Funksjon;
 
@@ -13,6 +12,7 @@ import bibliotek.Funksjon;
 import modell.Ansatt;
 import modell.Gruppe;
 import modell.GruppeListe;
+import modell.KontrollerData;
 
 public class GeneriskVisning {
 	public static void printTopp() throws SQLException {
