@@ -157,7 +157,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		avt.setStart(start);
 		avt.setSlutt(slutt);
 		avt.setSted(sted);
-		avt.oppdater();
+		avt.oppdater();//må få med relasjoner til alle deltakerne
 	}
 	private void visAvtale (int avtaleId) throws Exception {
 		GeneriskVisning.printTopp();
@@ -169,7 +169,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		AvtaleVisning.visAvtale(avt);
 		if (ansattId == avt.getMotelederId()) {
-			GeneriskVisning.printKommando("a", "alarm");
+			GeneriskVisning.printKommando("v", "alarm");
 			GeneriskVisning.printKommando("e", "endre");
 		}
 		GeneriskVisning.printKommando("s", "slett");
@@ -177,7 +177,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("q", "avslutt");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
-			case 'a':
+			case 'v':
 				if (ansattId == avt.getMotelederId()) {
 					new AlarmKontroller(avtaleId);
 					return;
