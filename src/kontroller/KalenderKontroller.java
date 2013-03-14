@@ -42,11 +42,15 @@ public class KalenderKontroller extends AbstraktKontroller {
 		if (avtaler.size() > 0) {
 			System.out.println();
 		}
+		
 		GeneriskVisning.printKommando("a", "vis som ansatt");
 		GeneriskVisning.printKommando("n", "ny avtale");
 		GeneriskVisning.printKommando("<", "forrige uke");
 		GeneriskVisning.printKommando(">", "neste uke");
+		GeneriskVisning.printKommando("v", "rediger varsel");
 		GeneriskVisning.printKommando("q", "avslutt");
+		
+		
 		String inn = this.ventStdInn();
 		do {
 			int avtaleId;
@@ -68,6 +72,9 @@ public class KalenderKontroller extends AbstraktKontroller {
 			return;
 		case 'q':
 			this.avslutt();
+			return;
+		case 'v':
+			new AlarmKontroller();
 			return;
 		case '<':
 			this.tid = new Date(this.tid.getTime() - 86400 * 7000);
