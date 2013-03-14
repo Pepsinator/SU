@@ -20,8 +20,8 @@ public class Avtale {
 	private String beskrivelse;
 
 	// latskapsinitialisering
-	private int ansatt_id;
-	private Ansatt ansatt;
+	private int moteleder_id;
+	private Ansatt moteleder;
 	private Mote mote;
 
 	public Avtale() {
@@ -29,14 +29,13 @@ public class Avtale {
 		this.navn = "";
 		this.start = new Date();
 		this.slutt = new Date();
-		this.ansatt_id = 0;
-		this.mote_id = 0;
 		this.beskrivelse = "";
-		this.ansatt = null;
-		this.mote = null;
+		this.moteleder_id = 0;
+		this.moteleder = null;
 	}
 
-	public static Avtale medId(int id) throws SQLException, FileNotFoundException, IOException {
+	public static Avtale medId(int id) throws SQLException,
+			FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		PreparedStatement beretning = kobling
 				.prepareStatement("select * from avtale where id=" + id + ";");
@@ -57,55 +56,51 @@ public class Avtale {
 		if (res.getTimestamp("slutt") != null) {
 			avt.setSlutt(new Date(res.getTimestamp("slutt").getTime()));
 		}
-		avt.setMoteId(res.getInt("mote_id"));
 		return avt;
 	}
 
-	public void oppdater() throws SQLException, FileNotFoundException, IOException {
+	public void oppdater() throws SQLException, FileNotFoundException,
+			IOException {
 		Connection kobling = Database.getInstans().getKobling();
 		Statement beretning = kobling.createStatement();
 		String sql = "update avtale set navn=\"" + this.navn
 				+ "\",start=from_unixtime("
 				+ ((int) (this.start.getTime() * .001))
 				+ "),slutt=from_unixtime("
-				+ ((int) (this.slutt.getTime() * .001)) + ")";
-//		if (this.mote_id != 0) {
-//			sql += ",mote_id=" + this.mote_id;
-//		}
-		sql += ",beskrivelse=\"" + this.beskrivelse + "\" where id=" + this.id
-				+ ";";
+				+ ((int) (this.slutt.getTime() * .001)) + ")"
+				+ ",beskrivelse=\"" + this.beskrivelse
+				+ "\",endra=from_unixtime("
+				+ ((int) (new Date().getTime() * .001)) + ") where id="
+				+ this.id + ";";
 		beretning.executeUpdate(sql);
 	}
 
-	public int getAnsattId () throws FileNotFoundException, SQLException, IOException {
-		if (this.ansatt_id == 0) {
+	public int getMotelederId() throws FileNotFoundException, SQLException,
+			IOException {
+		if (this.moteleder_id == 0) {
 			Connection kobling = Database.getInstans().getKobling();
 			PreparedStatement beretning = kobling
-					.prepareStatement("select ansatt_id from ansatt_avtale where status_id=1 and avtale_id=" + this.id + ";");
+					.prepareStatement("select ansatt_id from ansatt_avtale where status_id=1 and avtale_id="
+							+ this.id + ";");
 			ResultSet res = beretning.executeQuery();
 			if (!res.next()) {
 				return 0;
 			}
-			this.ansatt_id = res.getInt(0);
+			this.moteleder_id = res.getInt(1);
 		}
-		return this.ansatt_id;
+		return this.moteleder_id;
 	}
 
-	public Ansatt getMoteLeder() throws SQLException, FileNotFoundException, IOException {
-		if (this.ansatt_id == 0) {
+	public Ansatt getMoteleder() throws SQLException, FileNotFoundException,
+			IOException {
+		int id = this.getMotelederId();
+		if (id == 0) {
 			return null;
 		}
-		if (this.ansatt == null) {
-			this.ansatt = Ansatt.medId(this.ansatt_id);
+		if (this.moteleder == null) {
+			this.moteleder = Ansatt.medId(id);
 		}
-		return this.ansatt;
-	}
-
-	public Mote getMote() throws SQLException, FileNotFoundException, IOException {
-		if (this.mote == null) {
-			this.mote = Mote.medId(this.mote_id);
-		}
-		return this.mote;
+		return this.moteleder;
 	}
 
 	public int getId() {
@@ -138,15 +133,6 @@ public class Avtale {
 
 	public void setSlutt(Date slutt) {
 		this.slutt = slutt;
-	}
-
-	public int getMoteId() {
-		return this.mote_id;
-	}
-
-	public void setMoteId(int mote_id) {
-		this.mote = null;
-		this.mote_id = mote_id;
 	}
 
 	public String getBeskrivelse() {

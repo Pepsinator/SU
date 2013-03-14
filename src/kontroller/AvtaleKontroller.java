@@ -41,7 +41,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		System.out.println("==" + (avtaleId > 0 ? "Endre" : "Ny") + " avtale==\n");
 		if (avtaleId > 0) {
 			avt = Avtale.medId(avtaleId);
-			ansattId = avt.getAnsattId();
+			ansattId = avt.getMotelederId();
 			System.out.println("Gammelt navn: " + avt.getNavn());
 		}
 		System.out.print("Navn: ");
@@ -51,7 +51,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		System.out.print("Beskrivelse: ");
 		String beskrivelse = ventStdInn(true);
-		System.out.println("Tid er på formen: dd.MM.YYYY hh:mm");
+		System.out.println("Tid er på formen: dd.MM.yyyy hh:mm");
 		if (avtaleId > 0) {
 			System.out.println("Gammel starttid: " + avt.getStart());
 		}

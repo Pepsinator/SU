@@ -19,7 +19,7 @@ public class AvtaleVisning {
 		System.out.println();
 		ArrayList<Ansatt> deltakere = AnsattListe.medAvtaleId(avt.getId());
 		if (deltakere.size() > 0) {
-			System.out.println("Møteleder: " + avt.getMoteLeder().getNavn());
+			System.out.println("Møteleder: " + avt.getMoteleder().getNavn());
 			System.out.println("\nDeltakere:");
 			GeneriskVisning.printAnsatte(deltakere);
 			System.out.println();
