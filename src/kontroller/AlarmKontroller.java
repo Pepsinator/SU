@@ -20,17 +20,19 @@ public class AlarmKontroller extends AbstraktKontroller {
 	
 	public AlarmKontroller(int alarmId) throws SQLException, FileNotFoundException, IOException{
 		super();
-		visValgtAlarm(Avtale.medId(alarmId));
+		visValgtAlarm(Alarm.medId(alarmId));
 	}
 	
 	public void visAlarmer() throws Exception{
 		GeneriskVisning.printTopp();
-		System.out.println("Alarmer:\n");
 		AlarmVisning.printAlarmer();
+		
 		GeneriskVisning.printKommando("t", "tilbake");
 		GeneriskVisning.printKommando("n", "nytt varsel");
+		
 		String inn = ventStdInn();
-	
+		
+		//Hvis brukeren gir en alarmid skal alarminfo vises
 		do {
 			int alarmId;
 			try {
@@ -51,8 +53,9 @@ public class AlarmKontroller extends AbstraktKontroller {
 		}
 	}
 	
-	public void visValgtAlarm(Avtale avtale) throws SQLException{
+	public void visValgtAlarm(Alarm alarm) throws SQLException{
 		GeneriskVisning.printTopp();
+		AlarmVisning.visAlarm(alarm);
 	}
 
 }

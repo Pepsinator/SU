@@ -15,6 +15,7 @@ public class AlarmVisning {
 	//får inn array med alle alarmene og printer dem ut
 	public static String printAlarmer() throws FileNotFoundException, SQLException, IOException{
 		ArrayList<Alarm> alarmer = AlarmListe.alle();
+		System.out.println("Alarmer:\n");
 		System.out.println("Avtale ID\t\t Avtalenavn \t\t\tTid Før avtale");
 		for(int i = 0; i < alarmer.size(); i++){
 			formatAlarm(alarmer.get(i));
@@ -29,6 +30,10 @@ public class AlarmVisning {
 		System.out.println("" + alarm.getAvtale_id() + "\t\t\t"
 				+ Avtale.medId(alarm.getAvtale_id()).getNavn() + "\t\t\t"  // henter avtalenavnet
 				+ alarm.getTidForAvtale());
+	}
+	
+	public static void visAlarm(Alarm alarm){
+		
 	}
 	
 }
