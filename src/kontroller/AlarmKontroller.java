@@ -18,9 +18,9 @@ public class AlarmKontroller extends AbstraktKontroller {
 		visAlarmer();
 	}
 	
-	public AlarmKontroller(int avtaleId) throws SQLException, FileNotFoundException, IOException{
+	public AlarmKontroller(int alarmId) throws SQLException, FileNotFoundException, IOException{
 		super();
-		visValgtAlarm(Avtale.medId(avtaleId));
+		visValgtAlarm(Avtale.medId(alarmId));
 	}
 	
 	public void visAlarmer() throws Exception{
@@ -31,6 +31,18 @@ public class AlarmKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("n", "nytt varsel");
 		String inn = ventStdInn();
 	
+		do {
+			int alarmId;
+			try {
+				alarmId = Integer.parseInt(inn);
+			}
+			catch (NumberFormatException u) {
+				break;
+			}
+			new AlarmKontroller(alarmId);
+			return;
+		} while (false);
+		
 		switch(inn.charAt(0)){
 		case('t'):
 			new KalenderKontroller();
