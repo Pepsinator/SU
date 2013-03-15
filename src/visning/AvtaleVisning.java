@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
+import modell.KontrollerData;
 import modell.Rom;
 
 public class AvtaleVisning {
 	public static void visAvtale (Avtale avt) throws SQLException, FileNotFoundException, IOException {
+		int dinId = KontrollerData.getInstans().getInnlogga().getId();
 		System.out.println("==Avtaleinfo==\n");
 		System.out.println("Navn:          " + avt.getNavn());
 		System.out.println("Start:         " + avt.getStart());
@@ -20,13 +22,16 @@ public class AvtaleVisning {
 		ArrayList<Ansatt> deltakere = AnsattListe.medAvtaleId(avt.getId());
 		if (deltakere.size() > 1) {
 			System.out.println();
-			System.out.println("Møteleder: " + avt.getMoteleder().getNavn());
+			if (avt.getMotelederId() != dinId){//Kun andre deltagere får oppgitt møteleder her
+				System.out.println("Møteleder: " + avt.getMoteleder().getNavn());
+			}
 			Rom rom = avt.getRom();
 			if (rom != null) {
 				System.out.println("Rom:           " + avt.getRom().getNavn());
 			}
+			System.out.println("Din status for avtalen: " + modell.Melding.VisMelding(avt, dinId));//Skriver ut status i avtaleVisning
 			System.out.println("\nDeltakere:");
-			GeneriskVisning.printAnsatte(deltakere);
+			GeneriskVisning.printAnsatteMote(deltakere, avt);
 			System.out.println();
 		}
 		else {

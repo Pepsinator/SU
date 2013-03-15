@@ -129,7 +129,7 @@ public class Avtale {
 
 	public int getStatusIdMedAnsattId(int ansattId) throws FileNotFoundException, SQLException,
 			IOException {
-		if (this.status_id.get(ansattId) == 0) {
+//		if (this.status_id.get(ansattId) == 0) {
 			Connection kobling = Database.getInstans().getKobling();
 			PreparedStatement beretning = kobling
 					.prepareStatement("select status_id from ansatt_avtale where avtale_id="
@@ -139,7 +139,7 @@ public class Avtale {
 				return 0;
 			}
 			this.status_id.put(ansattId , res.getInt(1));
-		}
+//		}
 		return this.status_id.get(ansattId);
 	}
 

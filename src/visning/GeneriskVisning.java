@@ -25,6 +25,28 @@ public class GeneriskVisning {
 		System.out.println(id + Funksjon.strRepeat(" " , 7 - id.length()) + navn);
 	}
 
+	public static void printAnsatteMote (ArrayList<Ansatt> ansatte, modell.Avtale avt) throws SQLException, IOException {
+		for (int i = 0; i < ansatte.size(); i++) {
+			String status = "";												//Skriver ut statusen for avtalen i avtaleVisning
+			int s = avt.getStatusIdMedAnsattId(ansatte.get(i).getId());
+			int lengde = ansatte.get(i).getNavn().length();
+			status = Funksjon.strRepeat(" " , 18-lengde);
+			switch(s){
+			case(1): status += "(Leder)";
+			break;
+			case(2): status += "(Venter på svar)";
+			break;
+			case(3): status += "(Godtatt)";
+			break;
+			case(4): status += "(Avslått)";
+			break;
+			case(5): status += "(Venter på svar)";
+			break;
+			}
+			GeneriskVisning.printKommando("" + ansatte.get(i).getId() , ansatte.get(i).getNavn() + status);
+		}
+	}
+	
 	public static void printAnsatte (ArrayList<Ansatt> ansatte) {
 		for (int i = 0; i < ansatte.size(); i++) {
 			GeneriskVisning.printKommando("" + ansatte.get(i).getId() , ansatte.get(i).getNavn());
