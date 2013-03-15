@@ -13,6 +13,7 @@ import modell.Avtale;
 import modell.AvtaleListe;
 import modell.KontrollerData;
 
+import visning.AlarmVisning;
 import visning.GeneriskVisning;
 import visning.KalenderVisning;
 

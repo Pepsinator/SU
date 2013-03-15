@@ -14,9 +14,12 @@ public class AlarmListe {
 
 	//returner en liste med alarmer
 	public static ArrayList<Alarm> alle() throws FileNotFoundException, SQLException, IOException{
-		Ansatt ans =  KontrollerData.getInstans().getInnlogga();
-		int ansId = ans.getId();
-		return medSql("select id from alarm where ansatt_id=" + ansId + ";");
+		return medSql("select id from alarm;");
+	}
+
+	//returner en liste med alarmer for vaklgt bruker
+	public static ArrayList<Alarm> medAnsattId(int ansattId) throws FileNotFoundException, SQLException, IOException{
+		return medSql("select id from alarm where ansatt_id=" + ansattId + ";");
 	}
 	
 	//henter alarmer fra databasen

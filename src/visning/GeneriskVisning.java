@@ -16,8 +16,9 @@ import modell.KontrollerData;
 import modell.Rom;
 
 public class GeneriskVisning {
-	public static void printTopp() throws SQLException {
+	public static void printTopp() throws SQLException, FileNotFoundException, IOException {
 		System.out.println(Funksjon.strRepeat("\n" , 100) + "Logga inn som: " + KontrollerData.getInstans().getInnlogga().getNavn() + "\n");
+		AlarmVisning.printAlarmer(true);
 	}
 
 	public static void printKommando (String id , String navn) {

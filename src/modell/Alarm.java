@@ -14,10 +14,14 @@ public class Alarm {
 	private int avtale_id;
 	private int ansatt_id;
 	private int tidForAvtale;  	// tid i sekunder før avtale
+	private Avtale avtale;
 
 	Alarm(){
 		this.id = 0;
 		this.avtale_id = 0;
+		this.ansatt_id = 0;
+		this.tidForAvtale = 0;
+		this.avtale = null;
 	}
 	
 	// henter alarm med spesifikk id fra databasen
@@ -45,8 +49,8 @@ public class Alarm {
 			return null;
 		}
 		Alarm alarm = new Alarm();
-		alarm.setAvtale_id(res.getInt("avtale_id"));
-		alarm.setAnsatt_id(res.getInt("ansatt_id"));
+		alarm.setAvtaleId(res.getInt("avtale_id"));
+		alarm.setAnsattId(res.getInt("ansatt_id"));
 		alarm.setTidForAvtale(res.getInt("tid_for"));
 		alarm.setId(res.getInt("id"));
 		return alarm;
@@ -60,19 +64,26 @@ public class Alarm {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getAvtale_id() {
+	public int getAvtaleId() {
 		return avtale_id;
 	}
 
-	public void setAvtale_id(int avtale_id) {
+	public Avtale getAvtale () throws FileNotFoundException, SQLException, IOException {
+		if (this.avtale == null) {
+			this.avtale = Avtale.medId(this.avtale_id);
+		}
+		return this.avtale;
+	}
+
+	public void setAvtaleId(int avtale_id) {
 		this.avtale_id = avtale_id;
 	}
 
-	public int getAnsatt_id() {
+	public int getAnsattId() {
 		return ansatt_id;
 	}
 
-	public void setAnsatt_id(int ansatt_id) {
+	public void setAnsattId(int ansatt_id) {
 		this.ansatt_id = ansatt_id;
 	}
 
