@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 
 import bibliotek.Database;
 
@@ -56,6 +58,27 @@ public class Alarm {
 		return alarm;
 	}
 	
+	public void oppdater(int tidFor, int avtale_id) throws SQLException, FileNotFoundException,
+	IOException {
+		Connection kobling = Database.getInstans().getKobling();
+		Statement beretning = kobling.createStatement();
+		String sql = "UPDATE alarm SET tid_for=" + tidFor
+				+ ", ansatt_id=" + KontrollerData.getInstans().getInnlogga().getId()
+				+ ", avtale_id=" + avtale_id 
+				+ " where id=" 
+				+ this.id + ";";
+		beretning.executeUpdate(sql);
+	}
+	
+	public void slett() throws FileNotFoundException, SQLException, IOException{
+		Connection kobling = Database.getInstans().getKobling();
+		Statement beretning = kobling.createStatement();
+		
+		String sql = "DELETE FROM alarm where id=" + this.id + ";";
+		beretning.execute(sql);
+	}
+
+	
 	
 	public int getId() {
 		return id;
@@ -94,5 +117,6 @@ public class Alarm {
 	public void setTidForAvtale(int tidForAvtale) {
 		this.tidForAvtale = tidForAvtale;
 	}
+	
 	
 }
