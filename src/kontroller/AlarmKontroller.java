@@ -6,10 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import visning.AlarmVisning;
+import visning.AvtaleVisning;
 import visning.GeneriskVisning;
 import modell.Alarm;
 import modell.AlarmListe;
 import modell.Avtale;
+import modell.AvtaleListe;
 
 public class AlarmKontroller extends AbstraktKontroller {
 	
@@ -54,7 +56,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 		case('t'):
 			new KalenderKontroller();
 		case('n'):
-			//Nytt varsel
+			visAvtalerUtenAlarm();
 		}
 	}
 	
@@ -79,4 +81,12 @@ public class AlarmKontroller extends AbstraktKontroller {
 		} while (true);
 	}
 
+	public void visAvtalerUtenAlarm() throws FileNotFoundException, SQLException, IOException{
+		String sql = "select avtale.id from avtale where avtale.id NOT IN" +
+				"(select avtale.id from avtale, alarm where avtale_id = avtale.id)";
+		ArrayList<Avtale> avt = AvtaleListe.medSql(sql);
+//		System.out.println(Avtaler);
+		GeneriskVisning.printTopp();
+		AvtaleVisning.visAvtaler(avt);
+	}
 }

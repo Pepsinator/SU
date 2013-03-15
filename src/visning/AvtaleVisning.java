@@ -32,4 +32,14 @@ public class AvtaleVisning {
 			System.out.println("Sted:      " + avt.getSted());
 		}
 	}
+	public static void visAvtaler(ArrayList<Avtale> avtaler){
+		System.out.println("Avtaler: ");
+		System.out.println("ID:" + "\t" + "Navn:");
+		
+		for(int i = 0; i < avtaler.size() ; i++){
+			System.out.println(avtaler.get(i).getId() + "\t" + avtaler.get(i).getNavn());
+		}
+		System.out.println("");
+		
+	}
 }
