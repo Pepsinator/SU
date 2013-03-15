@@ -266,7 +266,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		System.out.println("Slette avtale \"" + avt.getNavn() + "\"? (y/*)");
-		if (ventStdInn(true) != "y") {
+		if (ventStdInn(true) != "y") { // Denne blir aldri TRUE
 			this.visAvtale(avtaleId);
 			return;
 		}
@@ -274,7 +274,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		PreparedStatement beretning = kobling
 				.prepareStatement("update avtale set aktiv=0 where id=" + avtaleId
 						+ ";");
-		beretning.executeQuery();
+		beretning.executeQuery(); //Dette virker ikke, gir exception
 		System.out.println("Avtale er sletta. Trykk linjeskift...");
 		this.ventStdInn(true);
 		new KalenderKontroller();
