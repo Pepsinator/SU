@@ -267,15 +267,14 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		System.out.println("Slette avtale \"" + avt.getNavn() + "\"? (y/*)");
-		if (ventStdInn(true) != "y") { // Denne blir aldri TRUE
+		if (!ventStdInn(true).equals("y")) {
 			this.visAvtale(avtaleId);
 			return;
 		}
 		Connection kobling = Database.getInstans().getKobling();
-		PreparedStatement beretning = kobling
-				.prepareStatement("update avtale set aktiv=0 where id=" + avtaleId
-						+ ";");
-		beretning.executeQuery(); //Dette virker ikke, gir exception
+		Statement beretning = kobling.createStatement();
+		String sql = "update avtale set aktiv=0 where id=" + avtaleId + ";";
+		beretning.executeUpdate(sql);
 		System.out.println("Avtale er sletta. Trykk linjeskift...");
 		this.ventStdInn(true);
 		new KalenderKontroller();
