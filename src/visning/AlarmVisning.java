@@ -14,6 +14,9 @@ import modell.KontrollerData;
 
 public class AlarmVisning {
 
+	/**
+	 * Kan Martin ordne med printingen her? :)
+	 */
 	
 	//får inn array med alle alarmene og printer dem ut
 	public static void printAlarmer() throws FileNotFoundException, SQLException, IOException{
@@ -37,7 +40,7 @@ public class AlarmVisning {
 			System.out.println();
 			return;
 		}
-		System.out.println("Avtale ID\t\t Avtalenavn \t\t\tTid Før avtale");
+		System.out.println("Alarm ID\t\t Avtalenavn \t\t\tTid Før avtale");
 		for(int i = 0; i < alarmer.size(); i++){
 			formatAlarm(alarmer.get(i));
 		}
@@ -46,7 +49,7 @@ public class AlarmVisning {
 	
 	public static void formatAlarm(Alarm alarm) throws FileNotFoundException, SQLException, IOException{
 		
-		System.out.println("" + alarm.getAvtaleId() + "\t\t\t"
+		System.out.println("" + alarm.getId() + "\t\t\t"
 				+ Avtale.medId(alarm.getAvtaleId()).getNavn() + "\t\t\t"  // henter avtalenavnet
 				+ Funksjon.sekTilTid(alarm.getTidForAvtale()));
 	}

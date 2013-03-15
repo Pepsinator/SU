@@ -48,10 +48,10 @@ public class Funksjon {
 	
 	// omformaterer fra tt:mm:ss til sekunder
 	public static int tidTilSek(String tid){
-		int sek = Integer.parseInt((String) tid.subSequence(6, 7));
-		int minutter = Integer.parseInt((String) tid.subSequence(3, 4));
-		int timer = Integer.parseInt((String) tid.subSequence(0, 1));
-		
+		int sek = Integer.parseInt((String) tid.subSequence(6, 8));
+		int minutter = Integer.parseInt((String) tid.subSequence(3, 5));
+		int timer = Integer.parseInt((String) tid.subSequence(0, 2));
+		System.out.println("" + timer + "\t" + minutter + "\t" + sek);
 		return ((timer * 3600) + sek + (minutter*60));
 	}
 }
