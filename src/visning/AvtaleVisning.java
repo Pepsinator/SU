@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
+import modell.Rom;
 
 public class AvtaleVisning {
 	public static void visAvtale (Avtale avt) throws SQLException, FileNotFoundException, IOException {
@@ -19,9 +20,16 @@ public class AvtaleVisning {
 		ArrayList<Ansatt> deltakere = AnsattListe.medAvtaleId(avt.getId());
 		if (deltakere.size() > 1) {
 			System.out.println("Møteleder: " + avt.getMoteleder().getNavn());
+			Rom rom = avt.getRom();
+			if (rom != null) {
+				System.out.println("Rom:       " + avt.getRom().getNavn());
+			}
 			System.out.println("\nDeltakere:");
 			GeneriskVisning.printAnsatte(deltakere);
 			System.out.println();
+		}
+		else {
+			System.out.println("Sted:      " + avt.getSted());
 		}
 	}
 }

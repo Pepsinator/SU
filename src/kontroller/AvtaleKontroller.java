@@ -238,8 +238,11 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				}
 				break;
 			case 's':
-				this.slettAvtale(avtaleId);
-				return;
+				if (ansattId == avt.getMotelederId()) {
+					this.slettAvtale(avtaleId);
+					return;
+				}
+				break;
 			case 'k':
 				new KalenderKontroller();
 				return;
@@ -256,6 +259,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		Avtale avt = Avtale.medId(avtaleId);
 		if (avt == null) {
 			System.out.println("Valgt avtale fins ikke.");
+			return;
+		}
+		if (KontrollerData.getInstans().getInnlogga().getId() != avt.getMotelederId()) {
+			System.out.println("Du har ikke adgang.");
 			return;
 		}
 		System.out.println("Slette avtale \"" + avt.getNavn() + "\"? (y/*)");
