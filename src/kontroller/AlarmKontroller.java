@@ -32,7 +32,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 		GeneriskVisning.printTopp();
 		AlarmVisning.printAlarmer();
 		
-		GeneriskVisning.printKommando("t", "tilbake");
+		GeneriskVisning.printKommando("k", "kalender");
 		GeneriskVisning.printKommando("n", "nytt varsel");
 		
 		String inn = ventStdInn();

@@ -45,7 +45,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		if (avtaleId > 0) {
 			avt = Avtale.medId(avtaleId);
 			if (avt == null) {
-				System.out.println("Valgt avtale fins ikke.");
+				System.out.println("Valgt avtale finnes ikke.");
 				return;
 			}
 			if (ansattId != avt.getMotelederId()) {
