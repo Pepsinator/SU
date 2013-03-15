@@ -213,6 +213,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
 		if (avt == null) {
 			System.out.println("Valgt avtale fins ikke.");
+			new KalenderKontroller();
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
