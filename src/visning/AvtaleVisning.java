@@ -13,9 +13,11 @@ import modell.Rom;
 public class AvtaleVisning {
 	public static void visAvtale (Avtale avt) throws SQLException, FileNotFoundException, IOException {
 		System.out.println("==Avtaleinfo==\n");
-		System.out.println("Navn:      " + avt.getNavn());
-		System.out.println("Start:     " + avt.getStart());
-		System.out.println("Slutt:     " + avt.getSlutt());
+		System.out.println("Navn:        " + avt.getNavn());
+		System.out.println("Start:       " + avt.getStart());
+		System.out.println("Slutt:       " + avt.getSlutt());
+		System.out.println("Sted:        " + avt.getSted());
+		System.out.println("Beskrivelse: " + avt.getBeskrivelse());
 		System.out.println();
 		ArrayList<Ansatt> deltakere = AnsattListe.medAvtaleId(avt.getId());
 		if (deltakere.size() > 1) {
