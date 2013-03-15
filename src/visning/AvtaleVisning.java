@@ -38,7 +38,9 @@ public class AvtaleVisning {
 		System.out.println("ID:" + "\t" + "Navn:");
 		
 		for(int i = 0; i < avtaler.size() ; i++){
-			System.out.println(avtaler.get(i).getId() + "\t" + avtaler.get(i).getNavn());
+//			if avtaler.get(i).getAktiv(){
+				System.out.println(avtaler.get(i).getId() + "\t" + avtaler.get(i).getNavn());
+//			}
 		}
 		System.out.println("");
 		

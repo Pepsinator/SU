@@ -21,6 +21,7 @@ public class Avtale {
 	private Date slutt;
 	private String sted;
 	private int rom_id;
+	private int aktiv;
 
 	private String beskrivelse;
 
