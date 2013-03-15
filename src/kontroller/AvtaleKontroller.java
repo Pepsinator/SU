@@ -108,7 +108,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			GeneriskVisning.printGrupper();
 			String inn;
 			do {
-				inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll(
+				inn = ventStdInn(true).replaceAll("[,]{2,}", ",").replaceAll(
 						"\\s*", "");
 				if (Funksjon.sjekkIder(inn)) {
 					ansatte = AnsattListe.medGruppeIder(inn);
@@ -127,7 +127,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 					.println("Hvilke ansatte (utenom gruppene) skal være med på møtet? Skriv id-ene separert med komma:");
 			GeneriskVisning.printAnsatte(u_ansatte);
 			do {
-				inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll(
+				inn = ventStdInn(true).replaceAll("[,]{2,}", ",").replaceAll(
 						"\\s*", "");
 				if (Funksjon.sjekkIder(inn)) {
 					ansatte = AnsattListe.utvidMedIder(ansatte, inn);
