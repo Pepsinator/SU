@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import bibliotek.Database;
 import bibliotek.Funksjon;
 
 import visning.AlarmVisning;
@@ -21,12 +22,12 @@ public class AlarmKontroller extends AbstraktKontroller {
 		visAlarmer();
 	}
 	
-	public AlarmKontroller(int alarmId) throws SQLException, FileNotFoundException, IOException{
+	public AlarmKontroller(int alarmId) throws Exception{
 		super();
 		visValgtAlarm(Alarm.medId(alarmId));
 	}
 	
-	public AlarmKontroller(int ansattId, int avtaleId) throws SQLException, FileNotFoundException, IOException{
+	public AlarmKontroller(int ansattId, int avtaleId) throws Exception{
 		super();
 		visValgtAlarm(Alarm.medAnsattIdAvtaleId(ansattId, avtaleId));
 	}
@@ -42,14 +43,14 @@ public class AlarmKontroller extends AbstraktKontroller {
 		
 		//Hvis brukeren gir en alarmid skal alarminfo vises
 		do {
-			int alarmId;
+			int avtId;
 			try {
-				alarmId = Integer.parseInt(inn);
+				avtId = Integer.parseInt(inn);
 			}
 			catch (NumberFormatException u) {
 				break;
 			}
-			new AlarmKontroller(alarmId);
+			new AlarmKontroller(avtId);
 			return;
 		} while (false);
 		
@@ -62,7 +63,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 	}
 	
 	//Viser egenskapene til en valgt alarm
-	public void visValgtAlarm(Alarm alarm) throws SQLException, FileNotFoundException, IOException{
+	public void visValgtAlarm(Alarm alarm) throws Exception{
 		GeneriskVisning.printTopp();
 		if (alarm == null) {
 			System.out.println("Du har ikke lagt til noen alarm for denne avtalen ennå.");
@@ -72,10 +73,15 @@ public class AlarmKontroller extends AbstraktKontroller {
 		}
 		System.out.println();
 		GeneriskVisning.printKommando("e", "endre");
+		GeneriskVisning.printKommando("s", "slette");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
 			case 'e':
 				//this.endreAlarm(alarm.getId());
+				return;
+			case 's':
+				alarm.slett();
+				new AlarmKontroller();
 				return;
 			default:
 				break;
@@ -84,7 +90,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 	}
 
 	//Viser avtaler som ikke har en alarm
-	public void visAvtalerUtenAlarm() throws FileNotFoundException, SQLException, IOException{
+	public void visAvtalerUtenAlarm() throws Exception{
 		String sql = "select avtale.id from avtale where avtale.id NOT IN" +
 				"(select avtale.id from avtale, alarm where avtale_id = avtale.id)";
 		ArrayList<Avtale> avt = AvtaleListe.medSql(sql);
@@ -107,8 +113,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 	}
 	
 	
-	
-	public void lagNyAlarm(int avtaleId, ArrayList<Avtale> avtList ) throws FileNotFoundException, SQLException, IOException{
+	public void lagNyAlarm(int avtaleId, ArrayList<Avtale> avtList ) throws Exception{
 		Avtale avt = Avtale.medId(avtaleId);
 		//Sjekker om avtalen ikke finnes eller allerede har alarm
 		if(avt == null ){
@@ -117,17 +122,20 @@ public class AlarmKontroller extends AbstraktKontroller {
 			System.out.println("Avtalen har allerede alarm");
 		}else{
 			//Tar inn en tid, looper helt til en gyldig tid blir valgt
+			int sek = 0;
 			System.out.println("Skriv inn tid før avtale (tt:mm:ss): ");
 			do{
-			String inn = this.ventStdInn();
-			if(!Funksjon.sjekkTidsFormat(inn)) {
-				System.out.println("Feil tidsformat");
-				continue;
-			}
-			int sek = Funksjon.tidTilSek(inn);
-			
+				String inn = this.ventStdInn();
+				if(!Funksjon.sjekkTidsFormat(inn)) {
+					System.out.println("Feil tidsformat");
+					continue;
+				}
+				sek = Funksjon.tidTilSek(inn);
 			}while(false);
-		}
-		
+			//legger til alarm i databasen
+			Alarm alarm = Alarm.medId(Database.nyRad("alarm"));
+			alarm.oppdater(sek, avtaleId);
+			new AlarmKontroller();
+		}	
 	}
 }

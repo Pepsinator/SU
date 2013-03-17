@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import bibliotek.Funksjon;
+
 import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
@@ -38,7 +40,14 @@ public class KalenderKontroller extends AbstraktKontroller {
 		Date ukeslutt = new Date((new Date((new SimpleDateFormat("yyyy/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 9));
 		ArrayList<Avtale> avtaler = AvtaleListe.medAnsattIdTidsrom(this.ansatt.getId(), ukestart , ukeslutt);
 		for (int i = 0; i < avtaler.size(); i++) {
-			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn());
+			String status = "";												//Skriver ut statusen for avtalen i kalenderVisning
+			int lengde = avtaler.get(i).getNavn().length();					//
+			String mellomrom = Funksjon.strRepeat(" " , 18-lengde);			//
+			int s = avtaler.get(i).getStatusIdMedAnsattId(ansatt.getId());	//
+			if (s == 2 || s == 5){											//
+				status = mellomrom + "(Krever svar)";						//
+			}																//
+			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn() + status);
 		}
 		if (avtaler.size() > 0) {
 			System.out.println();
