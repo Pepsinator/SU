@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 import bibliotek.Database;
@@ -28,6 +29,9 @@ public class Status {
 	}
 	private static Map<Integer , Status> instanser;
 	public static Status medId(int id) throws SQLException, FileNotFoundException, IOException {
+		if (instanser == null) {
+			instanser = new HashMap<Integer , Status>();
+		}
 		if (instanser.get(id) == null) {
 			synchronized (Status .class) {
 				if (instanser.get(id) == null) {
