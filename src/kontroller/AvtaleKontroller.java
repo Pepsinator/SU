@@ -45,7 +45,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		if (avtaleId > 0) {
 			avt = Avtale.medId(avtaleId);
 			if (avt == null) {
-				System.out.println("Valgt avtale fins ikke.");
+				System.out.println("Valgt avtale finnes ikke.");
 				return;
 			}
 			if (ansattId != avt.getMotelederId()) {
@@ -108,7 +108,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			GeneriskVisning.printGrupper();
 			String inn;
 			do {
-				inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll(
+				inn = ventStdInn(true).replaceAll("[,]{2,}", ",").replaceAll(
 						"\\s*", "");
 				if (Funksjon.sjekkIder(inn)) {
 					ansatte = AnsattListe.medGruppeIder(inn);
@@ -127,7 +127,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 					.println("Hvilke ansatte (utenom gruppene) skal være med på møtet? Skriv id-ene separert med komma:");
 			GeneriskVisning.printAnsatte(u_ansatte);
 			do {
-				inn = ventStdInn().replaceAll("[,]{2,}", ",").replaceAll(
+				inn = ventStdInn(true).replaceAll("[,]{2,}", ",").replaceAll(
 						"\\s*", "");
 				if (Funksjon.sjekkIder(inn)) {
 					ansatte = AnsattListe.utvidMedIder(ansatte, inn);
@@ -213,6 +213,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
 		if (avt == null) {
 			System.out.println("Valgt avtale fins ikke.");
+			new KalenderKontroller();
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
@@ -266,15 +267,14 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		System.out.println("Slette avtale \"" + avt.getNavn() + "\"? (y/*)");
-		if (ventStdInn(true) != "y") {
+		if (!ventStdInn(true).equals("y")) {
 			this.visAvtale(avtaleId);
 			return;
 		}
 		Connection kobling = Database.getInstans().getKobling();
-		PreparedStatement beretning = kobling
-				.prepareStatement("update avtale set aktiv=0 where id=" + avtaleId
-						+ ";");
-		beretning.executeQuery();
+		Statement beretning = kobling.createStatement();
+		String sql = "update avtale set aktiv=0 where id=" + avtaleId + ";";
+		beretning.executeUpdate(sql);
 		System.out.println("Avtale er sletta. Trykk linjeskift...");
 		this.ventStdInn(true);
 		new KalenderKontroller();

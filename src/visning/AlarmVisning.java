@@ -57,4 +57,6 @@ public class AlarmVisning {
 		System.out.println("Avtale:\t\t" + Avtale.medId(alarm.getAvtaleId()).getNavn());
 		System.out.println("Tid før avtale:\t" + Funksjon.sekTilTid(alarm.getTidForAvtale()));
 	}
+	
+	
 }

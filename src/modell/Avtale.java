@@ -21,6 +21,7 @@ public class Avtale {
 	private Date slutt;
 	private String sted;
 	private int rom_id;
+	private int aktiv;
 
 	private String beskrivelse;
 
@@ -59,6 +60,8 @@ public class Avtale {
 		if (!res.next()) {
 			return null;
 		}
+		avt.setSted(res.getString("sted"));
+		avt.setBeskrivelse(res.getString("beskrivelse"));
 		avt.setId(res.getInt("id"));
 		avt.setNavn(res.getString("navn"));
 		if (res.getTimestamp("start") != null) {

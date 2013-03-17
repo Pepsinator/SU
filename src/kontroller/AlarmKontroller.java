@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import bibliotek.Funksjon;
+
 import visning.AlarmVisning;
+import visning.AvtaleVisning;
 import visning.GeneriskVisning;
 import modell.Alarm;
-import modell.AlarmListe;
 import modell.Avtale;
+import modell.AvtaleListe;
 
 public class AlarmKontroller extends AbstraktKontroller {
 	
@@ -32,7 +35,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 		GeneriskVisning.printTopp();
 		AlarmVisning.printAlarmer();
 		
-		GeneriskVisning.printKommando("t", "tilbake");
+		GeneriskVisning.printKommando("k", "kalender");
 		GeneriskVisning.printKommando("n", "nytt varsel");
 		
 		String inn = ventStdInn();
@@ -54,10 +57,11 @@ public class AlarmKontroller extends AbstraktKontroller {
 		case('t'):
 			new KalenderKontroller();
 		case('n'):
-			//Nytt varsel
+			visAvtalerUtenAlarm();
 		}
 	}
 	
+	//Viser egenskapene til en valgt alarm
 	public void visValgtAlarm(Alarm alarm) throws SQLException, FileNotFoundException, IOException{
 		GeneriskVisning.printTopp();
 		if (alarm == null) {
@@ -79,4 +83,51 @@ public class AlarmKontroller extends AbstraktKontroller {
 		} while (true);
 	}
 
+	//Viser avtaler som ikke har en alarm
+	public void visAvtalerUtenAlarm() throws FileNotFoundException, SQLException, IOException{
+		String sql = "select avtale.id from avtale where avtale.id NOT IN" +
+				"(select avtale.id from avtale, alarm where avtale_id = avtale.id)";
+		ArrayList<Avtale> avt = AvtaleListe.medSql(sql);
+		GeneriskVisning.printTopp();
+		AvtaleVisning.visAvtaler(avt);
+		System.out.println("Velg id for å legge til alarm:");
+		String inn;
+		int avtaleId;
+		do {
+			inn = this.ventStdInn();
+			try {
+				avtaleId = Integer.parseInt(inn);
+			}
+			catch (NumberFormatException u) {
+				break;
+			}
+			lagNyAlarm(avtaleId, avt);
+			return;
+		} while (false);
+	}
+	
+	
+	
+	public void lagNyAlarm(int avtaleId, ArrayList<Avtale> avtList ) throws FileNotFoundException, SQLException, IOException{
+		Avtale avt = Avtale.medId(avtaleId);
+		//Sjekker om avtalen ikke finnes eller allerede har alarm
+		if(avt == null ){
+			System.out.println("Avtalen finnes ikke");
+		}else if(avtList.contains(avt)){
+			System.out.println("Avtalen har allerede alarm");
+		}else{
+			//Tar inn en tid, looper helt til en gyldig tid blir valgt
+			System.out.println("Skriv inn tid før avtale (tt:mm:ss): ");
+			do{
+			String inn = this.ventStdInn();
+			if(!Funksjon.sjekkTidsFormat(inn)) {
+				System.out.println("Feil tidsformat");
+				continue;
+			}
+			int sek = Funksjon.tidTilSek(inn);
+			
+			}while(false);
+		}
+		
+	}
 }

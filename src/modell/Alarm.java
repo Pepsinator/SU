@@ -41,7 +41,6 @@ public class Alarm {
 				.prepareStatement("select * from alarm where ansatt_id=" + ansattId + " and avtale_id=" + avtaleId + ";");
 		ResultSet res = beretning.executeQuery();
 		return init(res);
-		
 	}
 	
 	//initialiserer et alarmobjekt
