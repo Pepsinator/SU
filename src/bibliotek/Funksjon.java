@@ -51,7 +51,6 @@ public class Funksjon {
 		int sek = Integer.parseInt((String) tid.subSequence(6, 8));
 		int minutter = Integer.parseInt((String) tid.subSequence(3, 5));
 		int timer = Integer.parseInt((String) tid.subSequence(0, 2));
-		System.out.println("" + timer + "\t" + minutter + "\t" + sek);
 		return ((timer * 3600) + sek + (minutter*60));
 	}
 }

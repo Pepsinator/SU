@@ -32,12 +32,14 @@ public class AlarmKontroller extends AbstraktKontroller {
 		visValgtAlarm(Alarm.medAnsattIdAvtaleId(ansattId, avtaleId));
 	}
 	
+	//Printer ut alarmer
 	public void visAlarmer() throws Exception{
 		GeneriskVisning.printTopp();
 		AlarmVisning.printAlarmer();
 		
 		GeneriskVisning.printKommando("k", "kalender");
 		GeneriskVisning.printKommando("n", "nytt varsel");
+		GeneriskVisning.printKommando("q", "avslutt");
 		
 		String inn = ventStdInn();
 		
@@ -55,10 +57,15 @@ public class AlarmKontroller extends AbstraktKontroller {
 		} while (false);
 		
 		switch(inn.charAt(0)){
-		case('t'):
+		case('k'):
 			new KalenderKontroller();
 		case('n'):
 			visAvtalerUtenAlarm();
+		case('q'):
+			this.avslutt();
+		default:
+			new AlarmKontroller();
+			System.out.println("Ugyldig kommando");
 		}
 	}
 	
@@ -73,11 +80,11 @@ public class AlarmKontroller extends AbstraktKontroller {
 		}
 		System.out.println();
 		GeneriskVisning.printKommando("e", "endre");
-		GeneriskVisning.printKommando("s", "slette");
+		GeneriskVisning.printKommando("s", "slett");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
 			case 'e':
-				//this.endreAlarm(alarm.getId());
+				endreAlarm(alarm.getId());
 				return;
 			case 's':
 				alarm.slett();
@@ -87,6 +94,25 @@ public class AlarmKontroller extends AbstraktKontroller {
 				break;
 			}
 		} while (true);
+	}
+
+	//Endre en gitt alarm
+	private void endreAlarm(int alarmId) throws Exception {
+		Alarm alarm = Alarm.medId(alarmId);
+		int sek = 0;
+		int avtaleId = alarm.getAvtale().getId();
+		
+		System.out.println("Skriv inn ny tid før avtale (tt:mm:ss): ");
+		do{
+			String inn = this.ventStdInn();
+			if(!Funksjon.sjekkTidsFormat(inn)) {
+					System.out.println("Feil tidsformat");
+					continue;
+			}
+			sek = Funksjon.tidTilSek(inn);
+		}while(false);
+		alarm.oppdater(sek, avtaleId);
+		new AlarmKontroller();
 	}
 
 	//Viser avtaler som ikke har en alarm
@@ -112,7 +138,7 @@ public class AlarmKontroller extends AbstraktKontroller {
 		} while (false);
 	}
 	
-	
+	//Legg til en ny alarm til en avtale
 	public void lagNyAlarm(int avtaleId, ArrayList<Avtale> avtList ) throws Exception{
 		Avtale avt = Avtale.medId(avtaleId);
 		//Sjekker om avtalen ikke finnes eller allerede har alarm
