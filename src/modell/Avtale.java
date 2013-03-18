@@ -67,6 +67,7 @@ public class Avtale {
 		avt.setBeskrivelse(res.getString("beskrivelse"));
 		avt.setId(res.getInt("id"));
 		avt.setNavn(res.getString("navn"));
+		avt.setRomId(res.getInt("rom_id"));
 		if (res.getTimestamp("start") != null) {
 			avt.setStart(new Date(res.getTimestamp("start").getTime()));
 		}
