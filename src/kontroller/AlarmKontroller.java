@@ -74,6 +74,8 @@ public class AlarmKontroller extends AbstraktKontroller {
 		System.out.println();
 		GeneriskVisning.printKommando("e", "endre");
 		GeneriskVisning.printKommando("s", "slette");
+		GeneriskVisning.printKommando("a", "vis avtalen");
+		GeneriskVisning.printKommando("k", "vis kalender");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
 			case 'e':
@@ -83,10 +85,16 @@ public class AlarmKontroller extends AbstraktKontroller {
 				alarm.slett();
 				new AlarmKontroller();
 				return;
+			case 'a':
+				new AvtaleKontroller(alarm.getAvtaleId());
+				return;
+			case 'k':
+				new KalenderKontroller();
+				return;
 			default:
-				break;
+				continue;
 			}
-		} while (true);
+		} while (false);
 	}
 
 	//Viser avtaler som ikke har en alarm

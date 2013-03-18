@@ -78,8 +78,10 @@ public class Alarm {
 		beretning.execute(sql);
 	}
 
-	
-	
+	public int getSekTilStart () throws FileNotFoundException, SQLException, IOException {
+		return (int) (new Date().getTime() - this.getAvtale().getStart().getTime()) / 1000;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -24,23 +24,36 @@ public class AlarmVisning {
 		printAlarmer(false);
 	}
 	public static void printAlarmer(boolean ramme) throws FileNotFoundException, SQLException, IOException{
-		ArrayList<Alarm> alarmer = AlarmListe.medAnsattId(KontrollerData.getInstans().getInnlogga().getId());
+		ArrayList<Alarm> alarmer;
 		if (ramme) {
+			alarmer = AlarmListe.aktuelleMedAnsattId(KontrollerData.getInstans().getInnlogga().getId());
 			if (alarmer.size() == 0) {
 				return;
 			}
-			int kolStrl = 50;
-			System.out.println(" +" + Funksjon.strRepeat("-", kolStrl + 2) + "+ ");
+			int radStrl = 80;
+			int kolStrl = 40;
+			System.out.println(" +" + Funksjon.strRepeat("-", radStrl + 2) + "+ ");
 			String str;
+			int sek;
 			for (int i = 0; i < alarmer.size(); i++) {
-				str = alarmer.get(i).getAvtale().getNavn() + ": " + Funksjon.sekTilTid(alarmer.get(i).getTidForAvtale());
-				System.out.println(" | " + str + Funksjon.strRepeat(" ", kolStrl - str.length()) + " | ");
+				sek = alarmer.get(i).getSekTilStart();
+				str = alarmer.get(i).getAvtale().getNavn() + ":";
+				str += Funksjon.strRepeat(" ", kolStrl - str.length());
+				if (sek > 0) {
+					str += "kun " + Funksjon.sekTilTid(sek) + " til avtale";
+				}
+				else {
+					str += Funksjon.sekTilTid(-sek) + " siden avtalestart";
+				}
+				str += Funksjon.strRepeat(" ", radStrl - str.length());
+				System.out.println(" | " + str + " | ");
 			}
-			System.out.println(" +" + Funksjon.strRepeat("-", kolStrl + 2) + "+ ");
+			System.out.println(" +" + Funksjon.strRepeat("-", radStrl + 2) + "+ ");
 			System.out.println();
 			return;
 		}
 		//Vanlig visning av alarmer (ramme = false)
+		alarmer = AlarmListe.medAnsattId(KontrollerData.getInstans().getInnlogga().getId());
 		System.out.println("Alarm ID   Avtalenavn               Tid Før avtale");
 		for(int i = 0; i < alarmer.size(); i++){
 			formatAlarm(alarmer.get(i));
