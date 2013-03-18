@@ -220,7 +220,6 @@ public class AvtaleKontroller extends AbstraktKontroller {
 	private void visAvtale(int avtaleId) throws Exception {
 		GeneriskVisning.printTopp();
 		Avtale avt = Avtale.medId(avtaleId);
-		Rom rom = Rom.harBooket(avtaleId);
 		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
 		if (avt == null) {
 			System.out.println("Valgt avtale fins ikke.");
@@ -235,12 +234,6 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			GeneriskVisning.printKommando("e", "endre");
 			GeneriskVisning.printKommando("s", "slett");
 			
-			if(rom != null){
-				GeneriskVisning.printKommando("r","endre romreservasjon" );
-			}else{
-				GeneriskVisning.printKommando("l", "legg til romreservasjon");
-			}
-			
 		}
 		else {
 			GeneriskVisning.printKommando("i", "svar på/endre invitasjon");
@@ -249,16 +242,6 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("q", "avslutt");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
-			case 'r':
-				if(ansattId == avt.getMotelederId()){
-					
-				}
-				break;
-			case 'l':
-				if(ansattId == avt.getMotelederId()){
-					
-				}
-				break;
 			case 'v':
 				if (avt.erDeltakerMedId(ansattId)) {
 					new AlarmKontroller(ansattId, avtaleId);
