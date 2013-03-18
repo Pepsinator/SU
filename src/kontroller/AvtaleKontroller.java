@@ -107,12 +107,12 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		String sted = "";
 		int romId = 0;
 		ArrayList<Ansatt> ansatte = null;
+		String inn;
 		if (moteinfo) {
 			ArrayList<Ansatt> u_ansatte;
 			System.out
 					.println("Hvilke grupper skal være med på møtet? Skriv id-ene separert med komma:");
 			GeneriskVisning.printGrupper();
-			String inn;
 			do {
 				inn = ventStdInn(true).replaceAll("[,]{2,}", ",").replaceAll(
 						"\\s*", "");
@@ -152,6 +152,17 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				System.out.println("Klarte ikke å tolke. Prøv igjen.");
 			} while (true);
 			ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
+		} else if (!er_mote) {
+			if (avtaleId > 0) {
+				System.out.println("Gammelt sted: " + avt.getSted());
+			}
+			System.out.println("Sted (hva som helst): ");
+			sted = this.ventStdInn(true);
+		}
+		if (er_mote) {
+			if (ansatte == null) {
+				ansatte = avt.getDeltakere();
+			}
 			System.out.println("Hvilket rom med minimum " + ansatte.size()
 					+ " i kapasitet?");
 			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
@@ -165,12 +176,6 @@ public class AvtaleKontroller extends AbstraktKontroller {
 					continue;
 				}
 			} while (false);
-		} else if (!er_mote) {
-			if (avtaleId > 0) {
-				System.out.println("Gammelt sted: " + avt.getSted());
-			}
-			System.out.println("Sted (hva som helst): ");
-			sted = this.ventStdInn(true);
 		}
 		if (avt == null) {
 			avt = Avtale.medId(Database.nyRad("avtale"));
