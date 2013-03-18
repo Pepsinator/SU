@@ -13,16 +13,40 @@ import modell.Ansatt;
 import modell.Gruppe;
 import modell.GruppeListe;
 import modell.KontrollerData;
+import modell.Rom;
 
 public class GeneriskVisning {
-	public static void printTopp() throws SQLException {
+	public static void printTopp() throws SQLException, FileNotFoundException, IOException {
 		System.out.println(Funksjon.strRepeat("\n" , 100) + "Logga inn som: " + KontrollerData.getInstans().getInnlogga().getNavn() + "\n");
+		AlarmVisning.printAlarmer(true);
 	}
 
 	public static void printKommando (String id , String navn) {
 		System.out.println(id + Funksjon.strRepeat(" " , 7 - id.length()) + navn);
 	}
 
+	public static void printAnsatteMote (ArrayList<Ansatt> ansatte, modell.Avtale avt) throws SQLException, IOException {
+		for (int i = 0; i < ansatte.size(); i++) {
+			String status = "";												//Skriver ut statusen for avtalen i avtaleVisning
+			int s = avt.getStatusIdMedAnsattId(ansatte.get(i).getId());
+			int lengde = ansatte.get(i).getNavn().length();
+			status = Funksjon.strRepeat(" " , 18-lengde);
+			switch(s){
+			case(1): status += "(Leder)";
+			break;
+			case(2): status += "(Venter på svar)";
+			break;
+			case(3): status += "(Godtatt)";
+			break;
+			case(4): status += "(Avslått)";
+			break;
+			case(5): status += "(Venter på svar)";
+			break;
+			}
+			GeneriskVisning.printKommando("" + ansatte.get(i).getId() , ansatte.get(i).getNavn() + status);
+		}
+	}
+	
 	public static void printAnsatte (ArrayList<Ansatt> ansatte) {
 		for (int i = 0; i < ansatte.size(); i++) {
 			GeneriskVisning.printKommando("" + ansatte.get(i).getId() , ansatte.get(i).getNavn());
@@ -42,6 +66,11 @@ public class GeneriskVisning {
 		for (int i = 0; i < grl.size(); i++) {
 			GeneriskVisning.printKommando("" + grl.get(i).getId() , Funksjon.strRepeat(" " , tab * 4) + grl.get(i).getNavn());
 			GeneriskVisning.printGrupper(grl.get(i).getId(), tab + 1);
+		}
+	}
+	public static void printRom (ArrayList<Rom> rom) {
+		for (int i = 0; i < rom.size(); i++) {
+			GeneriskVisning.printKommando("" + rom.get(i).getId() , rom.get(i).getNavn());
 		}
 	}
 }

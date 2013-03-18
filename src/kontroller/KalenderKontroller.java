@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import bibliotek.Funksjon;
+
 import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.AvtaleListe;
 import modell.KontrollerData;
 
+import visning.AlarmVisning;
 import visning.GeneriskVisning;
 import visning.KalenderVisning;
 
@@ -37,7 +40,14 @@ public class KalenderKontroller extends AbstraktKontroller {
 		Date ukeslutt = new Date((new Date((new SimpleDateFormat("yyyy/MM/dd")).format(tid))).getTime() - 86400000 * (kal.get(Calendar.DAY_OF_WEEK) - 9));
 		ArrayList<Avtale> avtaler = AvtaleListe.medAnsattIdTidsrom(this.ansatt.getId(), ukestart , ukeslutt);
 		for (int i = 0; i < avtaler.size(); i++) {
-			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn());
+			String status = "";												//Skriver ut statusen for avtalen i kalenderVisning
+			int lengde = avtaler.get(i).getNavn().length();					//
+			String mellomrom = Funksjon.strRepeat(" " , 18-lengde);			//
+			int s = avtaler.get(i).getStatusIdMedAnsattId(ansatt.getId());	//
+			if (s == 2 || s == 5){											//
+				status = mellomrom + "(Krever svar)";						//
+			}																//
+			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn() + status);
 		}
 		if (avtaler.size() > 0) {
 			System.out.println();
@@ -51,9 +61,10 @@ public class KalenderKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("q", "avslutt");
 		
 		
-		String inn = this.ventStdInn();
+		String inn;
+		int avtaleId;
 		do {
-			int avtaleId;
+			inn = this.ventStdInn();
 			try {
 				avtaleId = Integer.parseInt(inn);
 			}
@@ -85,12 +96,18 @@ public class KalenderKontroller extends AbstraktKontroller {
 		}
 		this.visKalender();
 	}
-	private void velgAnsatt () throws SQLException, NumberFormatException, IOException {
-		Ansatt ansatt;
+	private void velgAnsatt () throws SQLException, IOException {
+		Ansatt ansatt = null;
 		do {
 			GeneriskVisning.printTopp();
+			System.out.println("Velg en ansatt:\n");
 			GeneriskVisning.printAnsatte(AnsattListe.alle());
-			ansatt = Ansatt.medId(Integer.parseInt(ventStdInn()));
+			try {
+				ansatt = Ansatt.medId(Integer.parseInt(ventStdInn()));
+			}
+			catch (NumberFormatException u) {
+				continue;
+			}
 		} while (ansatt == null);
 		this.ansatt = ansatt;
 	}
