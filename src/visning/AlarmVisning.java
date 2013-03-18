@@ -40,7 +40,8 @@ public class AlarmVisning {
 			System.out.println();
 			return;
 		}
-		System.out.println("Alarm ID\t\t Avtalenavn \t\t\tTid Før avtale");
+		//Vanlig visning av alarmer (ramme = false)
+		System.out.println("Alarm ID   Avtalenavn               Tid Før avtale");
 		for(int i = 0; i < alarmer.size(); i++){
 			formatAlarm(alarmer.get(i));
 		}
@@ -48,10 +49,14 @@ public class AlarmVisning {
 	}
 	
 	public static void formatAlarm(Alarm alarm) throws FileNotFoundException, SQLException, IOException{
+		String avtIdStr = String.valueOf(alarm.getId());				//Alarm ID
+		String avtNavnStr = alarm.getAvtale().getNavn();				//Avtalenavn
+		String avtTidForStr = Funksjon.sekTilTid(alarm.getTidForAvtale());	//Tid før
 		
-		System.out.println("" + alarm.getId() + "\t\t\t"
-				+ Avtale.medId(alarm.getAvtaleId()).getNavn() + "\t\t\t"  // henter avtalenavnet
-				+ Funksjon.sekTilTid(alarm.getTidForAvtale()));
+		
+		System.out.println(avtIdStr + Funksjon.strRepeat(" ", 11 - avtIdStr.length())
+				+ avtNavnStr + Funksjon.strRepeat(" ", 25 - avtNavnStr.length())  // henter avtalenavnet
+				+ avtTidForStr);
 	}
 	
 	public static void visAlarm(Alarm alarm) throws FileNotFoundException, SQLException, IOException{
