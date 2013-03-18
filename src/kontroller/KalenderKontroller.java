@@ -47,6 +47,9 @@ public class KalenderKontroller extends AbstraktKontroller {
 			if (s == 2 || s == 5){											//
 				status = mellomrom + "(Krever svar)";						//
 			}																//
+			else if (!avtaler.get(i).getAktiv()){							//
+				status = mellomrom + "(Avlyst)";							//
+			}																//
 			GeneriskVisning.printKommando("" + avtaler.get(i).getId() , avtaler.get(i).getNavn() + status);
 		}
 		if (avtaler.size() > 0) {

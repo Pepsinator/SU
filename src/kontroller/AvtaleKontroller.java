@@ -177,6 +177,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				}
 			} while (false);
 		}
+		else {
+			ansatte = new ArrayList<Ansatt>();
+			ansatte.add(Ansatt.medId(ansattId));
+		}
 		if (avt == null) {
 			avt = Avtale.medId(Database.nyRad("avtale"));
 		}
@@ -234,7 +238,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			GeneriskVisning.printKommando("e", "endre");
 			GeneriskVisning.printKommando("s", "slett");
 		}
-		else {
+		else if (avt.getAktiv()) {
 			GeneriskVisning.printKommando("i", "svar på/endre invitasjon");
 		}
 		GeneriskVisning.printKommando("k", "kalender");

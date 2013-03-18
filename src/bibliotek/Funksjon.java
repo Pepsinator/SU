@@ -4,6 +4,9 @@ import java.util.regex.Pattern;
 
 public class Funksjon {
 	public static String strRepeat (String str , int ant) {
+		if (ant < 0) {
+			ant = 0;
+		}
 		return new String(new char[ant]).replace("\0", str);
 	}
 	
