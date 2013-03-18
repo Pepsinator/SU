@@ -241,16 +241,6 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("q", "avslutt");
 		do {
 			switch (this.ventStdInn().charAt(0)) {
-			case 'r':
-				if(ansattId == avt.getMotelederId()){
-					
-				}
-				break;
-			case 'l':
-				if(ansattId == avt.getMotelederId()){
-					
-				}
-				break;
 			case 'v':
 				if (avt.erDeltakerMedId(ansattId)) {
 					new AlarmKontroller(ansattId, avtaleId);

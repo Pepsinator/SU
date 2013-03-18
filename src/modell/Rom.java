@@ -61,10 +61,4 @@ public class Rom {
 		this.kapasitet = kapasitet;
 	}
 	
-	// hvis en avtale alerede har booket et rom returners false;
-	public static Rom harBooket(int avtaleId) throws FileNotFoundException, SQLException, IOException {
-		Avtale avt = Avtale.medId(avtaleId);
-		return(avt.getRom());
-		
-	}
 }
