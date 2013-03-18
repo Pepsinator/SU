@@ -32,6 +32,8 @@ public class AvtaleVisning {
 			System.out.println("Din status for avtalen: " + avt.getStatusMedAnsattId(dinId).getNavn());//Skriver ut status i avtaleVisning
 			System.out.println("\nDeltakere:");
 			GeneriskVisning.printAnsatteMote(deltakere, avt);
+			
+			
 			System.out.println();
 		}
 		else {

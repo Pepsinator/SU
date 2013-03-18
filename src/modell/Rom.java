@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import bibliotek.Database;
@@ -14,6 +15,7 @@ public class Rom {
 	private int id;
 	private String navn;
 	private int kapasitet;
+	ArrayList<Avtale> avtaleListe = new ArrayList<Avtale>(); 
 
 	public static Rom medId(int id) throws SQLException,
 			FileNotFoundException, IOException {
@@ -57,5 +59,12 @@ public class Rom {
 
 	public void setKapasitet(int kapasitet) {
 		this.kapasitet = kapasitet;
+	}
+	
+	// hvis en avtale alerede har booket et rom returners false;
+	public static Rom harBooket(int avtaleId) throws FileNotFoundException, SQLException, IOException {
+		Avtale avt = Avtale.medId(avtaleId);
+		return(avt.getRom());
+		
 	}
 }
