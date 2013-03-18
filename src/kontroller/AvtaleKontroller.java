@@ -154,8 +154,8 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
 			System.out.println("Hvilket rom med minimum " + ansatte.size()
 					+ " i kapasitet?");
-			GeneriskVisning.printRom(RomListe.medMinimumKapasitet(ansatte
-					.size()));
+			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
+					.size(),  start, slutt));
 			do {
 				inn = this.ventStdInn();
 				try {
