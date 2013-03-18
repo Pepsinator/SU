@@ -58,6 +58,7 @@ public class Alarm {
 		return alarm;
 	}
 	
+	//oppdaterer alarmen i databasen med tid før og avtale-id
 	public void oppdater(int tidFor, int avtale_id) throws SQLException, FileNotFoundException,
 	IOException {
 		Connection kobling = Database.getInstans().getKobling();
@@ -70,6 +71,7 @@ public class Alarm {
 		beretning.executeUpdate(sql);
 	}
 	
+	//sletter en alarm fra databasen
 	public void slett() throws FileNotFoundException, SQLException, IOException{
 		Connection kobling = Database.getInstans().getKobling();
 		Statement beretning = kobling.createStatement();
@@ -89,6 +91,7 @@ public class Alarm {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public int getAvtaleId() {
 		return avtale_id;
 	}

@@ -13,16 +13,14 @@ import modell.Avtale;
 import modell.KontrollerData;
 
 public class AlarmVisning {
-
-	/**
-	 * Kan Martin ordne med printingen her? :)
-	 */
 	
 	//får inn array med alle alarmene og printer dem ut
 	public static void printAlarmer() throws FileNotFoundException, SQLException, IOException{
 		System.out.println("Alarmer:\n");
 		printAlarmer(false);
 	}
+	
+	//printer alarmer, enten med eller uten ramme rundt
 	public static void printAlarmer(boolean ramme) throws FileNotFoundException, SQLException, IOException{
 		ArrayList<Alarm> alarmer;
 		if (ramme) {
@@ -61,23 +59,24 @@ public class AlarmVisning {
 		System.out.println("");
 	}
 	
+	//hjelpemetode til printing av alarmer
 	public static void formatAlarm(Alarm alarm) throws FileNotFoundException, SQLException, IOException{
-		String avtIdStr = String.valueOf(alarm.getId());				//Alarm ID
-		String avtNavnStr = alarm.getAvtale().getNavn();				//Avtalenavn
-		String avtTidForStr = Funksjon.sekTilTid(alarm.getTidForAvtale());	//Tid før
+		String avtIdStr = String.valueOf(alarm.getId());					//Alarm ID
+		String avtNavnStr = alarm.getAvtale().getNavn();					//Avtalenavn
+		String avtTidForStr = Funksjon.sekTilTid(alarm.getTidForAvtale());	//Tid før avtale
 		
 		
 		System.out.println(avtIdStr + Funksjon.strRepeat(" ", 11 - avtIdStr.length())
-				+ avtNavnStr + Funksjon.strRepeat(" ", 25 - avtNavnStr.length())  // henter avtalenavnet
+				+ avtNavnStr + Funksjon.strRepeat(" ", 25 - avtNavnStr.length())
 				+ avtTidForStr);
 	}
 	
+	//viser én alarm for seg selv
 	public static void visAlarm(Alarm alarm) throws FileNotFoundException, SQLException, IOException{
 		System.out.println("Alarm:\n");
 		System.out.println("ID:\t\t" + alarm.getId());
 		System.out.println("Avtale:\t\t" + Avtale.medId(alarm.getAvtaleId()).getNavn());
 		System.out.println("Tid før avtale:\t" + Funksjon.sekTilTid(alarm.getTidForAvtale()));
 	}
-	
 	
 }
