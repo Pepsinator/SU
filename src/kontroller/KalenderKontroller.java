@@ -57,7 +57,7 @@ public class KalenderKontroller extends AbstraktKontroller {
 		GeneriskVisning.printKommando("n", "ny avtale");
 		GeneriskVisning.printKommando("<", "forrige uke");
 		GeneriskVisning.printKommando(">", "neste uke");
-		GeneriskVisning.printKommando("v", "rediger varsel");
+		GeneriskVisning.printKommando("v", "vis/rediger varsel");
 		GeneriskVisning.printKommando("q", "avslutt");
 		
 		
