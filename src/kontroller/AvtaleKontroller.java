@@ -17,7 +17,9 @@ import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.KontrollerData;
+import modell.Rom;
 import modell.RomListe;
+import modell.Status;
 import visning.AvtaleVisning;
 import visning.GeneriskVisning;
 
@@ -94,19 +96,23 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			}
 		} while (slutt == null);
 		boolean moteinfo = false;
+		boolean er_mote = false;
 		if (avtaleId == 0) {
 			System.out.print("Er avtalen et møte? (y/*) ");
 			moteinfo = this.ventStdInn().charAt(0) == 'y';
 		}
+		else {
+			er_mote = avt.getDeltakere().size() > 0;
+		}
 		String sted = "";
 		int romId = 0;
-		ArrayList<Ansatt> ansatte;
+		ArrayList<Ansatt> ansatte = null;
+		String inn;
 		if (moteinfo) {
 			ArrayList<Ansatt> u_ansatte;
 			System.out
 					.println("Hvilke grupper skal være med på møtet? Skriv id-ene separert med komma:");
 			GeneriskVisning.printGrupper();
-			String inn;
 			do {
 				inn = ventStdInn(true).replaceAll("[,]{2,}", ",").replaceAll(
 						"\\s*", "");
@@ -146,10 +152,21 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				System.out.println("Klarte ikke å tolke. Prøv igjen.");
 			} while (true);
 			ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
+		} else if (!er_mote) {
+			if (avtaleId > 0) {
+				System.out.println("Gammelt sted: " + avt.getSted());
+			}
+			System.out.println("Sted (hva som helst): ");
+			sted = this.ventStdInn(true);
+		}
+		if (er_mote) {
+			if (ansatte == null) {
+				ansatte = avt.getDeltakere();
+			}
 			System.out.println("Hvilket rom med minimum " + ansatte.size()
 					+ " i kapasitet?");
-			GeneriskVisning.printRom(RomListe.medMinimumKapasitet(ansatte
-					.size()));
+			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
+					.size(),  start, slutt));
 			do {
 				inn = this.ventStdInn();
 				try {
@@ -159,13 +176,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 					continue;
 				}
 			} while (false);
-		} else {
-			ansatte = null;
-			if (avtaleId > 0) {
-				System.out.println("Gammelt sted: " + avt.getSted());
-			}
-			System.out.println("Sted (hva som helst): ");
-			sted = this.ventStdInn(true);
+		}
+		else {
+			ansatte = new ArrayList<Ansatt>();
+			ansatte.add(Ansatt.medId(ansattId));
 		}
 		if (avt == null) {
 			avt = Avtale.medId(Database.nyRad("avtale"));
@@ -219,9 +233,14 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		AvtaleVisning.visAvtale(avt);
 		if (avt.erDeltakerMedId(ansattId)) {
 			GeneriskVisning.printKommando("v", "alarm");
-			GeneriskVisning.printKommando("e", "endre");
 		}
-		GeneriskVisning.printKommando("s", "slett");
+		if (ansattId == avt.getMotelederId()) {
+			GeneriskVisning.printKommando("e", "endre");
+			GeneriskVisning.printKommando("s", "slett");
+		}
+		else if (avt.getAktiv()) {
+			GeneriskVisning.printKommando("i", "svar på/endre invitasjon");
+		}
 		GeneriskVisning.printKommando("k", "kalender");
 		GeneriskVisning.printKommando("q", "avslutt");
 		do {
@@ -244,6 +263,12 @@ public class AvtaleKontroller extends AbstraktKontroller {
 					return;
 				}
 				break;
+			case 'i':
+				if (ansattId != avt.getMotelederId()) {
+					this.endreInvitasjon(avtaleId);
+					return;
+				}
+				break;
 			case 'k':
 				new KalenderKontroller();
 				return;
@@ -253,6 +278,64 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				break;
 			}
 		} while (true);
+	}
+
+	private void endreInvitasjon (int avtaleId) throws Exception {
+		GeneriskVisning.printTopp();
+		int ansattId = KontrollerData.getInstans().getInnlogga().getId();
+		Avtale avt = Avtale.medId(avtaleId);
+		if (avt == null) {
+			System.out.println("Valgt avtale/møte fins ikke.");
+			return;
+		}
+		if (avt.getDeltakere().size() == 1) {
+			System.out.println("Dette er en avtale og ikke et møte.");
+			return;
+		}
+		Status denne = avt.getStatusMedAnsattId(ansattId);
+		if (denne.getId() == 6) {
+			System.out.println("Møtet er avlyst.");
+			return;
+		}
+		if (ansattId == avt.getMotelederId()) {
+			System.out.println("Du er møteleder.");
+			return;
+		}
+		System.out.println("Nåværende status: " + denne.getNavn());
+		System.out.println("Endre til:\n");
+		if (denne.getId() == 2 || denne.getId() == 4 || denne.getId() == 5) {
+			GeneriskVisning.printKommando("3", Status.medId(3).getNavn());
+		}
+		if (denne.getId() == 2 || denne.getId() == 3 || denne.getId() == 5) {
+			GeneriskVisning.printKommando("4", Status.medId(4).getNavn());
+		}
+		GeneriskVisning.printKommando("a", "avbryt");
+		String inn;
+		int nyStatusId = 2;
+		do {
+			switch (ventStdInn().charAt(0)) {
+			case '3':
+				if (denne.getId() == 2 || denne.getId() == 4 || denne.getId() == 5) {
+					nyStatusId = 3;
+					break;
+				}
+				continue;
+			case '4':
+				if (denne.getId() == 2 || denne.getId() == 3 || denne.getId() == 5) {
+					nyStatusId = 4;
+					break;
+				}
+				continue;
+			case 'a':
+				this.visAvtale(avtaleId);
+				return;
+			}
+		} while(false);
+		avt.setStatusIdMedAnsattId(nyStatusId , ansattId);
+		System.out.println("Invitasjonen er besvart. Trykk linjeskift...");
+		this.ventStdInn(true);
+		new KalenderKontroller();
+		return;
 	}
 
 	private void slettAvtale(int avtaleId) throws Exception {

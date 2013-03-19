@@ -21,7 +21,8 @@ public class Avtale {
 	private Date slutt;
 	private String sted;
 	private int rom_id;
-	private int aktiv;
+	private Date endra;
+	private boolean aktiv;
 
 	private String beskrivelse;
 
@@ -29,7 +30,7 @@ public class Avtale {
 	private int moteleder_id;
 	private Ansatt moteleder;
 	private Rom rom;
-	private Map<Integer , Integer> status_id;
+	private Map<Integer , Integer> statusId;
 	private Map<Integer , Status> status;
 
 	public Avtale() {
@@ -40,9 +41,11 @@ public class Avtale {
 		this.sted = "";
 		this.rom_id = 0;
 		this.beskrivelse = "";
+		this.endra = new Date();
+		this.aktiv = true;
 		this.moteleder_id = 0;
 		this.moteleder = null;
-		this.status_id = new HashMap<Integer , Integer>();
+		this.statusId = new HashMap<Integer , Integer>();
 		this.status = new HashMap<Integer , Status>();
 	}
 
@@ -64,12 +67,24 @@ public class Avtale {
 		avt.setBeskrivelse(res.getString("beskrivelse"));
 		avt.setId(res.getInt("id"));
 		avt.setNavn(res.getString("navn"));
+		avt.setRomId(res.getInt("rom_id"));
 		if (res.getTimestamp("start") != null) {
 			avt.setStart(new Date(res.getTimestamp("start").getTime()));
 		}
 		if (res.getTimestamp("slutt") != null) {
 			avt.setSlutt(new Date(res.getTimestamp("slutt").getTime()));
 		}
+		Date endra = new Date();
+		try {
+			endra = res.getTimestamp("endra");
+		}
+		catch (Exception u) {
+			
+		}
+		if (endra != null) {
+			avt.setEndra(new Date(endra.getTime()));
+		}
+		avt.setAktiv(res.getInt("aktiv") > 0);
 		return avt;
 	}
 
@@ -84,7 +99,7 @@ public class Avtale {
 				+ ((int) (this.slutt.getTime() * .001)) + ")" + ",sted=\""
 				+ this.sted + "\",rom_id=" + this.rom_id + ",beskrivelse=\"" + this.beskrivelse
 				+ "\",endra=from_unixtime("
-				+ ((int) (new Date().getTime() * .001)) + ") where id="
+				+ ((int) (new Date().getTime() * .001)) + "),aktiv=" + (this.aktiv ? "1" : "0") + " where id="
 				+ this.id + ";";
 		beretning.executeUpdate(sql);
 	}
@@ -129,7 +144,11 @@ public class Avtale {
 
 	public int getStatusIdMedAnsattId(int ansattId) throws FileNotFoundException, SQLException,
 			IOException {
-//		if (this.status_id.get(ansattId) == 0) {
+		if (!this.aktiv) {
+			// Avtalen er inaktiv/sletta, så invitasjonen er avlyst
+			this.statusId.put(ansattId, 6); // 6 = Avlyst
+		}
+		if (this.statusId.get(ansattId) == null) {
 			Connection kobling = Database.getInstans().getKobling();
 			PreparedStatement beretning = kobling
 					.prepareStatement("select status_id from ansatt_avtale where avtale_id="
@@ -138,9 +157,16 @@ public class Avtale {
 			if (!res.next()) {
 				return 0;
 			}
-			this.status_id.put(ansattId , res.getInt(1));
-//		}
-		return this.status_id.get(ansattId);
+			this.statusId.put(ansattId , res.getInt(1));
+		}
+		return this.statusId.get(ansattId);
+	}
+
+	public void setStatusIdMedAnsattId (int statusId , int ansattId) throws FileNotFoundException, SQLException, IOException {
+		Connection kobling = Database.getInstans().getKobling();
+		Statement beretning = kobling.createStatement();
+		String sql = "update ansatt_avtale set status_id=" + statusId + " where ansatt_id=" + ansattId + " and avtale_id=" + this.id + ";";
+		beretning.executeUpdate(sql);
 	}
 
 	public Status getStatusMedAnsattId(int ansattId) throws SQLException, FileNotFoundException,
@@ -223,5 +249,21 @@ public class Avtale {
 
 	public void setBeskrivelse(String beskrivelse) {
 		this.beskrivelse = beskrivelse;
+	}
+
+	public Date getEndra() {
+		return endra;
+	}
+
+	public void setEndra(Date endra) {
+		this.endra = endra;
+	}
+
+	public boolean getAktiv () {
+		return this.aktiv;
+	}
+
+	public void setAktiv (boolean aktiv) {
+		this.aktiv = aktiv;
 	}
 }

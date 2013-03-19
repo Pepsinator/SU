@@ -68,9 +68,10 @@ public class GeneriskVisning {
 			GeneriskVisning.printGrupper(grl.get(i).getId(), tab + 1);
 		}
 	}
+	
 	public static void printRom (ArrayList<Rom> rom) {
 		for (int i = 0; i < rom.size(); i++) {
-			GeneriskVisning.printKommando("" + rom.get(i).getId() , rom.get(i).getNavn());
+			GeneriskVisning.printKommando("" + rom.get(i).getId() , rom.get(i).getNavn() + "(maks " + rom.get(i).getKapasitet() + ")");
 		}
 	}
 }

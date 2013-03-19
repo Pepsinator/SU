@@ -4,6 +4,9 @@ import java.util.regex.Pattern;
 
 public class Funksjon {
 	public static String strRepeat (String str , int ant) {
+		if (ant < 0) {
+			ant = 0;
+		}
 		return new String(new char[ant]).replace("\0", str);
 	}
 	
@@ -51,7 +54,6 @@ public class Funksjon {
 		int sek = Integer.parseInt((String) tid.subSequence(6, 8));
 		int minutter = Integer.parseInt((String) tid.subSequence(3, 5));
 		int timer = Integer.parseInt((String) tid.subSequence(0, 2));
-		System.out.println("" + timer + "\t" + minutter + "\t" + sek);
 		return ((timer * 3600) + sek + (minutter*60));
 	}
 }

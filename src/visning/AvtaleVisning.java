@@ -29,9 +29,11 @@ public class AvtaleVisning {
 			if (rom != null) {
 				System.out.println("Rom:           " + avt.getRom().getNavn());
 			}
-			System.out.println("Din status for avtalen: " + modell.Melding.VisMelding(avt, dinId));//Skriver ut status i avtaleVisning
+			System.out.println("Din status for avtalen: " + avt.getStatusMedAnsattId(dinId).getNavn());//Skriver ut status i avtaleVisning
 			System.out.println("\nDeltakere:");
 			GeneriskVisning.printAnsatteMote(deltakere, avt);
+			
+			
 			System.out.println();
 		}
 		else {
@@ -43,9 +45,9 @@ public class AvtaleVisning {
 		System.out.println("ID:" + "\t" + "Navn:");
 		
 		for(int i = 0; i < avtaler.size() ; i++){
-//			if avtaler.get(i).getAktiv(){
+			if (avtaler.get(i).getAktiv()) {
 				System.out.println(avtaler.get(i).getId() + "\t" + avtaler.get(i).getNavn());
-//			}
+			}
 		}
 		System.out.println("");
 		

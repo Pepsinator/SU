@@ -51,7 +51,7 @@ public class KalenderVisning {
 			System.out.print("   ");
 			String ider;
 			for (int j = 0; j < dager.length; j++) {
-				ider = AvtaleListe.oppramsIder(AvtaleListe.medAnsattIdTidsrom(
+				ider = AvtaleListe.oppramsIder(AvtaleListe.aktiveMedAnsattIdTidsrom(
 						ans.getId(), new Date(dag[j].getTime() + i * 3600000),
 						new Date(dag[j].getTime() + (i + 1) * 3600000)));
 				System.out.print(ider
