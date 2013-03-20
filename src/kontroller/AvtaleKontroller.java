@@ -157,10 +157,16 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
 		}
 		if (er_mote) {
-			System.out.println("Hvilket rom med minimum " + ansatte.size()
+			int antall = 0;
+			if (avt == null) {
+				antall = ansatte.size();
+			}
+			else {
+				antall = avt.getDeltakere().size();
+			}
+			System.out.println("Hvilket rom med minimum " + antall
 					+ " i kapasitet?");
-			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
-					.size(), start, slutt));
+			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(antall, start, slutt));
 			do {
 				inn = this.ventStdInn();
 				try {
