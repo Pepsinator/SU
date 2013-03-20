@@ -362,10 +362,13 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		Connection kobling = Database.getInstans().getKobling();
 		Statement beretning = kobling.createStatement();
-		String sql = "delete from alarm where avtale_id=" + avtaleId + ";";
-		beretning.executeUpdate(sql);
-		beretning = kobling.createStatement();
-		sql = "update avtale set aktiv=0 where id=" + avtaleId + ";";
+		String sql;
+		if (Avtale.medId(avtaleId).getDeltakere().size() > 1) {
+			sql = "update avtale set aktiv=0 where id=" + avtaleId + ";";
+		}
+		else {
+			sql = "delete from avtale where id=" + avtaleId + ";";
+		}
 		beretning.executeUpdate(sql);
 		System.out.println("Avtale er sletta. Trykk linjeskift...");
 		this.ventStdInn(true);
