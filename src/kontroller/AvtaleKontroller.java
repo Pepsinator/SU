@@ -68,7 +68,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		System.out.print("Beskrivelse: ");
 		String beskrivelse = ventStdInn(true);
-		System.out.println("Tid er på formen: dd.MM.yyyy hh:mm");
+		System.out.println("Tid er på formen: dd.MM.yyyy HH:mm");
 		if (avtaleId > 0) {
 			System.out.println("Gammel starttid: " + avt.getStart());
 		}
@@ -76,7 +76,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Starttid: ");
 			try {
-				start = new SimpleDateFormat("dd.MM.yyyy hh:mm")
+				start = new SimpleDateFormat("dd.MM.yyyy HH:mm")
 						.parse(ventStdInn());
 			} catch (ParseException u) {
 				start = null;
@@ -89,8 +89,13 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Slutttid: ");
 			try {
-				slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm")
+				slutt = new SimpleDateFormat("dd.MM.yyyy HH:mm")
 						.parse(ventStdInn());
+				if( start.getTime() >= slutt.getTime()){
+					System.out.println(slutt.toString() +"");
+					System.out.println("Slutttid må være etter starttid!");
+					slutt = null;
+				}
 			} catch (ParseException u) {
 				slutt = null;
 			}
