@@ -81,7 +81,7 @@ public class Alarm {
 	}
 
 	public int getSekTilStart () throws FileNotFoundException, SQLException, IOException {
-		return (int) (new Date().getTime() - this.getAvtale().getStart().getTime()) / 1000;
+		return (int) (this.getAvtale().getStart().getTime() - (new Date()).getTime()) / 1000;
 	}
 
 	public int getId() {

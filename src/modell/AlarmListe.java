@@ -38,8 +38,8 @@ public class AlarmListe {
 				+ ansattId
 				+ " and "
 				+ naotid
-				+ " < av.slutt and "
-				+ naotidPlussTidFor + " < av.start;";
+				+ " < av.slutt and av.start <= "
+				+ naotidPlussTidFor + ";";
 		//System.out.println(sql + "\n");
 		return medSql(sql);
 	}

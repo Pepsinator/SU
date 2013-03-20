@@ -3,7 +3,6 @@ package kontroller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -17,7 +16,6 @@ import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.KontrollerData;
-import modell.Rom;
 import modell.RomListe;
 import modell.Status;
 import visning.AvtaleVisning;
@@ -68,7 +66,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		System.out.print("Beskrivelse: ");
 		String beskrivelse = ventStdInn(true);
-		System.out.println("Tid er på formen: dd.MM.yyyy hh:mm");
+		System.out.println("Tid er på formen: dd.MM.yyyy HH:mm");
 		if (avtaleId > 0) {
 			System.out.println("Gammel starttid: " + avt.getStart());
 		}
@@ -76,7 +74,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Starttid: ");
 			try {
-				start = new SimpleDateFormat("dd.MM.yyyy hh:mm")
+				start = new SimpleDateFormat("dd.MM.yyyy HH:mm")
 						.parse(ventStdInn());
 			} catch (ParseException u) {
 				start = null;
@@ -89,8 +87,13 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		do {
 			System.out.print("Slutttid: ");
 			try {
-				slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm")
+				slutt = new SimpleDateFormat("dd.MM.yyyy HH:mm")
 						.parse(ventStdInn());
+				if( start.getTime() >= slutt.getTime()){
+					System.out.println(slutt.toString() +"");
+					System.out.println("Slutttid må være etter starttid!");
+					slutt = null;
+				}
 			} catch (ParseException u) {
 				slutt = null;
 			}
@@ -100,9 +103,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		if (avtaleId == 0) {
 			System.out.print("Er avtalen et møte? (y/*) ");
 			moteinfo = this.ventStdInn().charAt(0) == 'y';
+			er_mote = moteinfo;
 		}
 		else {
-			er_mote = avt.getDeltakere().size() > 0;
+			er_mote = avt.getDeltakere().size() > 1;
 		}
 		String sted = "";
 		int romId = 0;
@@ -156,7 +160,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			if (avtaleId > 0) {
 				System.out.println("Gammelt sted: " + avt.getSted());
 			}
-			System.out.println("Sted (hva som helst): ");
+			System.out.print("Sted (hva som helst): ");
 			sted = this.ventStdInn(true);
 		}
 		if (er_mote) {
@@ -166,7 +170,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			System.out.println("Hvilket rom med minimum " + ansatte.size()
 					+ " i kapasitet?");
 			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
-					.size(),  start, slutt));
+					.size(), start, slutt));
 			do {
 				inn = this.ventStdInn();
 				try {
@@ -179,7 +183,9 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		else {
 			ansatte = new ArrayList<Ansatt>();
-			ansatte.add(Ansatt.medId(ansattId));
+			if (avt == null) {
+				ansatte.add(Ansatt.medId(ansattId));
+			}
 		}
 		if (avt == null) {
 			avt = Avtale.medId(Database.nyRad("avtale"));
@@ -231,6 +237,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
+		System.out.println();
 		if (avt.erDeltakerMedId(ansattId)) {
 			GeneriskVisning.printKommando("v", "alarm");
 		}

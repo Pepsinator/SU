@@ -29,13 +29,15 @@ public class AlarmVisning {
 				return;
 			}
 			int radStrl = 80;
-			int kolStrl = 40;
+			int kolStrl = 50;
 			System.out.println(" +" + Funksjon.strRepeat("-", radStrl + 2) + "+ ");
 			String str;
 			int sek;
 			for (int i = 0; i < alarmer.size(); i++) {
 				sek = alarmer.get(i).getSekTilStart();
-				str = alarmer.get(i).getAvtale().getNavn() + ":";
+				str = alarmer.get(i).getAvtale().getId() + "";
+				str += Funksjon.strRepeat(" ", 6 - str.length());
+				str += alarmer.get(i).getAvtale().getNavn() + ":";
 				str += Funksjon.strRepeat(" ", kolStrl - str.length());
 				if (sek > 0) {
 					str += "kun " + Funksjon.sekTilTid(sek) + " til avtale";
