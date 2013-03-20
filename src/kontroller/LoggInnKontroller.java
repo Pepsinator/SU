@@ -1,6 +1,5 @@
 package kontroller;
 
-import visning.GeneriskVisning;
 import modell.Ansatt;
 import modell.KontrollerData;
 

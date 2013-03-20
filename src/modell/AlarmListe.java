@@ -32,15 +32,15 @@ public class AlarmListe {
 		// til avtalen
 		String naotid = "from_unixtime("
 				+ ((int) ((new Date()).getTime() * .001)) + ")";
-		String naotidPlussTidFor = "from_unixtime("
-				+ ((int) ((new Date()).getTime() * .001)) + " + al.tid_for)";
+		String naotidMinusTidFor = "from_unixtime("
+				+ ((int) ((new Date()).getTime() * .001)) + " - al.tid_for)";
 		String sql = "select al.id from alarm as al,avtale as av where al.avtale_id=av.id and al.ansatt_id="
 				+ ansattId
 				+ " and "
 				+ naotid
 				+ " < av.slutt and "
-				+ naotidPlussTidFor + " < av.start;";
-		//System.out.println(sql + "\n");
+				+ naotidMinusTidFor + " < av.start;";
+		System.out.println(sql + "\n");
 		return medSql(sql);
 	}
 

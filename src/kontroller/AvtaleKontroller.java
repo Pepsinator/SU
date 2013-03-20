@@ -102,7 +102,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			moteinfo = this.ventStdInn().charAt(0) == 'y';
 		}
 		else {
-			er_mote = avt.getDeltakere().size() > 0;
+			er_mote = avt.getDeltakere().size() > 1;
 		}
 		String sted = "";
 		int romId = 0;
@@ -166,7 +166,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			System.out.println("Hvilket rom med minimum " + ansatte.size()
 					+ " i kapasitet?");
 			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
-					.size(),  start, slutt));
+					.size(), start, slutt));
 			do {
 				inn = this.ventStdInn();
 				try {
@@ -356,7 +356,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		Connection kobling = Database.getInstans().getKobling();
 		Statement beretning = kobling.createStatement();
-		String sql = "update avtale set aktiv=0 where id=" + avtaleId + ";";
+		String sql = "delete from alarm where avtale_id=" + avtaleId + ";";
+		beretning.executeUpdate(sql);
+		beretning = kobling.createStatement();
+		sql = "update avtale set aktiv=0 where id=" + avtaleId + ";";
 		beretning.executeUpdate(sql);
 		System.out.println("Avtale er sletta. Trykk linjeskift...");
 		this.ventStdInn(true);

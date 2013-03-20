@@ -124,10 +124,18 @@ public class AlarmKontroller extends AbstraktKontroller {
 		else {
 			AlarmVisning.visAlarm(alarm);
 			System.out.println();
+			GeneriskVisning.printKommando("a", "vis avtale");
+			GeneriskVisning.printKommando("k", "kalender");
 			GeneriskVisning.printKommando("e", "endre");
 			GeneriskVisning.printKommando("s", "slett");
 			do {
 				switch (this.ventStdInn().charAt(0)) {
+				case 'a':
+					new AvtaleKontroller(alarm.getAvtaleId());
+					return;
+				case 'k':
+					new KalenderKontroller();
+					return;
 				case 'e':
 					endreAlarm(alarm.getId());
 					return;

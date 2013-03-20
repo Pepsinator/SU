@@ -24,7 +24,7 @@ public class AvtaleListe {
 				+ ")";
 		String slutta = "from_unixtime(" + ((int) (slutt.getTime() * .001))
 				+ ")";
-		return medSql("select av.id from avtale as av,ansatt_avtale as aa where av.id=aa.avtale_id and aa.ansatt_id="
+		return medSql("select av.id from avtale as av,ansatt_avtale as aa where av.aktiv=1 and av.id=aa.avtale_id and aa.ansatt_id="
 				+ ansattId
 				+ " and (("
 				+ starta
