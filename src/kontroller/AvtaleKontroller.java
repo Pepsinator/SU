@@ -237,6 +237,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			return;
 		}
 		AvtaleVisning.visAvtale(avt);
+		System.out.println();
 		if (avt.erDeltakerMedId(ansattId)) {
 			GeneriskVisning.printKommando("v", "alarm");
 		}
