@@ -91,7 +91,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			try {
 				slutt = new SimpleDateFormat("dd.MM.yyyy hh:mm")
 						.parse(ventStdInn());
-				if( start.after(slutt)){
+				if( start.getTime() >= slutt.getTime()){
 					System.out.println("Slutttid må være etter starttid!");
 					slutt = null;
 				}
