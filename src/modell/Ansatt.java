@@ -34,8 +34,9 @@ public class Ansatt {
 	public static Ansatt medLoggInn(String bruker, String passord)
 			throws SQLException, FileNotFoundException, IOException {
 		Connection kobling = Database.getInstans().getKobling();
-		PreparedStatement beretning = kobling
-				.prepareStatement("select * from ansatt where bruker=\"" + bruker + "\" and passord=\"" + passord + "\";");
+		String sql = "select * from ansatt where bruker=\"" + bruker + "\" and passord=\"" + passord + "\";";
+		//System.out.println(sql);
+		PreparedStatement beretning = kobling.prepareStatement(sql);
 		ResultSet res = beretning.executeQuery();
 		return init(res);
 	}
