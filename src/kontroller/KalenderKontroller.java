@@ -42,7 +42,7 @@ public class KalenderKontroller extends AbstraktKontroller {
 		for (int i = 0; i < avtaler.size(); i++) {
 			String status = "";												//Skriver ut statusen for avtalen i kalenderVisning
 			int lengde = avtaler.get(i).getNavn().length();					//
-			String mellomrom = Funksjon.strRepeat(" " , 18-lengde);			//
+			String mellomrom = Funksjon.strRepeat(" " , 25-lengde);			//
 			int s = avtaler.get(i).getStatusIdMedAnsattId(ansatt.getId());	//
 			if (s == 2 || s == 5){											//
 				status = mellomrom + "(Krever svar)";						//

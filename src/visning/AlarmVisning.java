@@ -41,7 +41,7 @@ public class AlarmVisning {
 					str += "kun " + Funksjon.sekTilTid(sek) + " til avtale";
 				}
 				else {
-					str += Funksjon.sekTilTid(-sek) + " siden avtalestart";
+					str += Funksjon.sekTilTid(-sek) + " til avtalestart";
 				}
 				str += Funksjon.strRepeat(" ", radStrl - str.length());
 				System.out.println(" | " + str + " | ");
