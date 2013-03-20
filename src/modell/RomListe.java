@@ -34,11 +34,11 @@ public class RomListe {
 				+ kapasitet
 				+ " and id NOT IN("
 				+ "select r.id from rom as r,avtale as a where a.aktiv=1 and r.id=a.rom_id and (("
-				+ starta + " <= a.start and a.start < " + slutta + ") or ("
-				+ starta + " <= a.slutt and a.slutt < " + slutta + ") or ("
-				+ starta + " <= a.start and a.slutt < " + slutta
+				+ starta + " <= a.start and a.start <= " + slutta + ") or ("
+				+ starta + " <= a.slutt and a.slutt <= " + slutta + ") or ("
+				+ starta + " <= a.start and a.slutt <= " + slutta
 				+ ") or (a.start <= " + starta + " and " + slutta
-				+ " < a.slutt)));");
+				+ " <= a.slutt)));");
 	}
 
 	public static ArrayList<Rom> medSql(String sql) throws SQLException,

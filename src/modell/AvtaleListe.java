@@ -24,25 +24,14 @@ public class AvtaleListe {
 				+ ")";
 		String slutta = "from_unixtime(" + ((int) (slutt.getTime() * .001))
 				+ ")";
-		return medSql("select av.id from avtale as av,ansatt_avtale as aa where av.aktiv=1 and av.id=aa.avtale_id and aa.ansatt_id="
+		return medSql("select av.id from avtale as av,ansatt_avtale as aa where av.id=aa.avtale_id and aa.ansatt_id="
 				+ ansattId
 				+ " and (("
-				+ starta
-				+ " <= av.start and av.start < "
-				+ slutta
-				+ ") or ("
-				+ starta
-				+ " <= av.slutt and av.slutt < "
-				+ slutta
-				+ ") or ("
-				+ starta
-				+ " <= av.start and av.slutt < "
-				+ slutta
-				+ ") or (av.start <= "
-				+ starta
-				+ " and "
-				+ slutta
-				+ " < av.slutt));");
+				+ starta + " <= av.start and av.start <= " + slutta + ") or ("
+				+ starta + " <= av.slutt and av.slutt <= " + slutta + ") or ("
+				+ starta + " <= av.start and av.slutt <= " + slutta
+				+ ") or (av.start <= " + starta + " and " + slutta
+				+ " <= av.slutt));");
 	}
 
 	public static ArrayList<Avtale> aktiveMedAnsattIdTidsrom(int ansattId,
@@ -55,22 +44,11 @@ public class AvtaleListe {
 		return medSql("select av.id from avtale as av,ansatt_avtale as aa where av.aktiv=1 and av.id=aa.avtale_id and aa.ansatt_id="
 				+ ansattId
 				+ " and (("
-				+ starta
-				+ " <= av.start and av.start < "
-				+ slutta
-				+ ") or ("
-				+ starta
-				+ " <= av.slutt and av.slutt < "
-				+ slutta
-				+ ") or ("
-				+ starta
-				+ " <= av.start and av.slutt < "
-				+ slutta
-				+ ") or (av.start <= "
-				+ starta
-				+ " and "
-				+ slutta
-				+ " < av.slutt));");
+				+ starta + " <= av.start and av.start <= " + slutta + ") or ("
+				+ starta + " <= av.slutt and av.slutt <= " + slutta + ") or ("
+				+ starta + " <= av.start and av.slutt <= " + slutta
+				+ ") or (av.start <= " + starta + " and " + slutta
+				+ " <= av.slutt));");
 	}
 
 	public static ArrayList<Avtale> medSql(String sql) throws SQLException,
