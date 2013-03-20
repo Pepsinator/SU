@@ -103,6 +103,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		if (avtaleId == 0) {
 			System.out.print("Er avtalen et møte? (y/*) ");
 			moteinfo = this.ventStdInn().charAt(0) == 'y';
+			er_mote = moteinfo;
 		}
 		else {
 			er_mote = avt.getDeltakere().size() > 1;
@@ -159,7 +160,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			if (avtaleId > 0) {
 				System.out.println("Gammelt sted: " + avt.getSted());
 			}
-			System.out.println("Sted (hva som helst): ");
+			System.out.print("Sted (hva som helst): ");
 			sted = this.ventStdInn(true);
 		}
 		if (er_mote) {
@@ -182,7 +183,9 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		}
 		else {
 			ansatte = new ArrayList<Ansatt>();
-			ansatte.add(Ansatt.medId(ansattId));
+			if (avt == null) {
+				ansatte.add(Ansatt.medId(ansattId));
+			}
 		}
 		if (avt == null) {
 			avt = Avtale.medId(Database.nyRad("avtale"));

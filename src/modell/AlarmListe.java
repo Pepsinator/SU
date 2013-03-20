@@ -40,7 +40,7 @@ public class AlarmListe {
 				+ naotid
 				+ " < av.slutt and "
 				+ naotidMinusTidFor + " < av.start;";
-		System.out.println(sql + "\n");
+		//System.out.println(sql + "\n");
 		return medSql(sql);
 	}
 
