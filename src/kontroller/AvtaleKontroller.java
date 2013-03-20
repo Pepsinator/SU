@@ -16,6 +16,7 @@ import modell.Ansatt;
 import modell.AnsattListe;
 import modell.Avtale;
 import modell.KontrollerData;
+import modell.Rom;
 import modell.RomListe;
 import modell.Status;
 import visning.AvtaleVisning;
@@ -98,12 +99,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				slutt = null;
 			}
 		} while (slutt == null);
-		boolean moteinfo = false;
 		boolean er_mote = false;
 		if (avtaleId == 0) {
 			System.out.print("Er avtalen et møte? (y/*) ");
-			moteinfo = this.ventStdInn().charAt(0) == 'y';
-			er_mote = moteinfo;
+			er_mote = this.ventStdInn().charAt(0) == 'y';
 		}
 		else {
 			er_mote = avt.getDeltakere().size() > 1;
@@ -112,7 +111,7 @@ public class AvtaleKontroller extends AbstraktKontroller {
 		int romId = 0;
 		ArrayList<Ansatt> ansatte = null;
 		String inn;
-		if (moteinfo) {
+		if (er_mote && avt == null) {
 			ArrayList<Ansatt> u_ansatte;
 			System.out
 					.println("Hvilke grupper skal være med på møtet? Skriv id-ene separert med komma:");
@@ -156,17 +155,8 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				System.out.println("Klarte ikke å tolke. Prøv igjen.");
 			} while (true);
 			ansatte = AnsattListe.utvidMedId(ansatte, ansattId);
-		} else if (!er_mote) {
-			if (avtaleId > 0) {
-				System.out.println("Gammelt sted: " + avt.getSted());
-			}
-			System.out.print("Sted (hva som helst): ");
-			sted = this.ventStdInn(true);
 		}
 		if (er_mote) {
-			if (ansatte == null) {
-				ansatte = avt.getDeltakere();
-			}
 			System.out.println("Hvilket rom med minimum " + ansatte.size()
 					+ " i kapasitet?");
 			GeneriskVisning.printRom(RomListe.ledigeMedMinimumKapasitet(ansatte
@@ -175,6 +165,10 @@ public class AvtaleKontroller extends AbstraktKontroller {
 				inn = this.ventStdInn();
 				try {
 					romId = Integer.parseInt(inn);
+					if (Rom.medId(romId) == null) {
+						System.out.println("Rommet fins ikke, prøv igjen.");
+						continue;
+					}
 					break;
 				} catch (NumberFormatException u) {
 					continue;
@@ -182,6 +176,11 @@ public class AvtaleKontroller extends AbstraktKontroller {
 			} while (false);
 		}
 		else {
+			if (avtaleId > 0) {
+				System.out.println("Gammelt sted: " + avt.getSted());
+			}
+			System.out.print("Sted (hva som helst): ");
+			sted = this.ventStdInn(true);
 			ansatte = new ArrayList<Ansatt>();
 			if (avt == null) {
 				ansatte.add(Ansatt.medId(ansattId));
